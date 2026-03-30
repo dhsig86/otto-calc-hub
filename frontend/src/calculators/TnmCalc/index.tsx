@@ -102,74 +102,65 @@ export default function TnmCalc() {
   const renderSubsitesAndSpecials = () => {
     if (organ === 'laringe') {
       return (
-        <select value={subsite} onChange={e => { setSubsite(e.target.value); setTValue(''); }} className="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-[#00A0AF] outline-none mb-4">
-          <option value="">Selecione o Subsítio da Laringe...</option>
-          <option value="glote">Glote</option>
-          <option value="supraglote">Supraglote</option>
-          <option value="subglote">Subglote</option>
-        </select>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-4 mt-2">
+          {[{v:'glote', l:'Glote'}, {v:'supraglote', l:'Supraglote'}, {v:'subglote', l:'Subglote'}].map(opt => (
+            <button key={opt.v} onClick={() => { setSubsite(opt.v); setTValue(''); }} className={`p-3 rounded-lg border-2 text-sm font-bold transition-all ${subsite === opt.v ? 'bg-[#00A0AF] text-white border-[#00A0AF] shadow' : 'bg-white text-slate-600 border-slate-200 hover:border-[#5CC6BA]'}`}>{opt.l}</button>
+          ))}
+        </div>
       );
     } else if (organ === 'cavidade_oral') {
       return (
-        <select value={subsite} onChange={e => { setSubsite(e.target.value); setTValue(''); }} className="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-[#00A0AF] outline-none mb-4">
-          <option value="">Selecione o Subsítio da Cavidade Oral...</option>
-          <option value="labios">Lábios</option>
-          <option value="lingua">Língua (2/3 Anteriores)</option>
-          <option value="assoalho">Assoalho de Boca</option>
-          <option value="gengiva">Gengiva</option>
-          <option value="palato_duro">Palato Duro</option>
-          <option value="mucosa_bucal">Mucosa Jugal</option>
-        </select>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4 mt-2">
+          {[{v:'labios',l:'Lábios'},{v:'lingua',l:'Língua (2/3 Ant)'},{v:'assoalho',l:'Assoalho da Boca'},{v:'gengiva',l:'Gengiva'},{v:'palato_duro',l:'Palato Duro'},{v:'mucosa_bucal',l:'Mucosa Jugal'}].map(opt => (
+            <button key={opt.v} onClick={() => { setSubsite(opt.v); setTValue(''); }} className={`p-3 rounded-lg border-2 text-sm font-bold transition-all ${subsite === opt.v ? 'bg-[#00A0AF] text-white border-[#00A0AF] shadow' : 'bg-white text-slate-600 border-slate-200 hover:border-[#5CC6BA]'}`}>{opt.l}</button>
+          ))}
+        </div>
       );
     } else if (organ === 'faringe') {
       return (
-        <div className="space-y-4 mb-4">
-          <select value={subsite} onChange={e => { setSubsite(e.target.value); setTValue(''); }} className="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-[#00A0AF] outline-none">
-            <option value="">Selecione o Subsítio da Faringe...</option>
-            <option value="nasofaringe">Nasofaringe</option>
-            <option value="orofaringe">Orofaringe</option>
-            <option value="hipofaringe">Hipofaringe</option>
-          </select>
+        <div className="space-y-4 mb-4 mt-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+             {[{v:'nasofaringe',l:'Nasofaringe'},{v:'orofaringe',l:'Orofaringe'},{v:'hipofaringe',l:'Hipofaringe'}].map(opt => (
+              <button key={opt.v} onClick={() => { setSubsite(opt.v); setTValue(''); }} className={`p-3 rounded-lg border-2 text-sm font-bold transition-all ${subsite === opt.v ? 'bg-[#00A0AF] text-white border-[#00A0AF] shadow' : 'bg-white text-slate-600 border-slate-200 hover:border-[#5CC6BA]'}`}>{opt.l}</button>
+             ))}
+          </div>
           {subsite === 'orofaringe' && (
-            <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
-               <label className="block text-sm font-bold text-orange-800 mb-2">Status p16 (Indutor de HPV):</label>
-               <select value={hpv} onChange={e => { setHpv(e.target.value); setNValue(''); }} className="w-full p-2 border border-orange-300 rounded outline-none bg-white">
-                  <option value="negativo">p16 Negativo (Comportamento Clássico AJCC)</option>
-                  <option value="positivo">p16 Positivo (Estadiamento Diferenciado HPV+)</option>
-               </select>
+            <div className="bg-orange-50 p-4 rounded-lg border border-orange-200 mt-4">
+               <label className="block text-sm font-bold text-orange-800 mb-3">Status p16 (Indutor de HPV):</label>
+               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                 <button onClick={() => { setHpv('negativo'); setNValue(''); }} className={`p-3 rounded-lg border-2 text-sm font-bold transition-all ${hpv === 'negativo' ? 'bg-orange-500 text-white border-orange-500 shadow' : 'bg-white text-orange-700 border-orange-200 hover:border-orange-400'}`}>Negativo (Clássico AJCC)</button>
+                 <button onClick={() => { setHpv('positivo'); setNValue(''); }} className={`p-3 rounded-lg border-2 text-sm font-bold transition-all ${hpv === 'positivo' ? 'bg-orange-500 text-white border-orange-500 shadow' : 'bg-white text-orange-700 border-orange-200 hover:border-orange-400'}`}>Positivo (Diferenciado HPV+)</button>
+               </div>
             </div>
           )}
         </div>
       );
     } else if (organ === 'glandulas_salivares') {
       return (
-        <select value={subsite} onChange={e => { setSubsite(e.target.value); setTValue(''); }} className="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-[#00A0AF] outline-none mb-4">
-          <option value="">Selecione a Glândula Base...</option>
-          <option value="parotida">Parótida</option>
-          <option value="submandibular">Submandibular</option>
-          <option value="sublingual">Sublingual</option>
-          <option value="glandulasMenores">Glândulas Salivares Menores</option>
-        </select>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4 mt-2">
+          {[{v:'parotida',l:'Parótida'},{v:'submandibular',l:'Submandibular'},{v:'sublingual',l:'Sublingual'},{v:'glandulasMenores',l:'Gld. Menores'}].map(opt => (
+            <button key={opt.v} onClick={() => { setSubsite(opt.v); setTValue(''); }} className={`p-3 rounded-lg border-2 text-sm font-bold transition-all ${subsite === opt.v ? 'bg-[#00A0AF] text-white border-[#00A0AF] shadow' : 'bg-white text-slate-600 border-slate-200 hover:border-[#5CC6BA]'}`}>{opt.l}</button>
+          ))}
+        </div>
       );
     } else if (organ === 'tireoide') {
       return (
-        <div className="space-y-4 mb-4">
+        <div className="space-y-4 mb-4 mt-2">
            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-               <label className="block text-sm font-bold text-blue-800 mb-2">Tipo Histológico:</label>
-               <select value={histology} onChange={e => { setHistology(e.target.value); setTValue(''); }} className="w-full p-2 mb-4 border border-blue-300 rounded outline-none bg-white">
-                  <option value="papilifero">Papilífero (Diferenciado)</option>
-                  <option value="folicular">Folicular (Diferenciado)</option>
-                  <option value="medular">Medular</option>
-                  <option value="anaplasico">Anaplásico (Indiferenciado)</option>
-               </select>
+               <label className="block text-sm font-bold text-blue-800 mb-3">Tipo Histológico:</label>
+               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-6">
+                 {[{v:'papilifero',l:'Papilífero (Diferenciado)'},{v:'folicular',l:'Folicular (Diferenciado)'},{v:'medular',l:'Medular'},{v:'anaplasico',l:'Anaplásico (Indiferenc.)'}].map(opt => (
+                   <button key={opt.v} onClick={() => { setHistology(opt.v); setTValue(''); }} className={`p-3 rounded-lg border-2 text-xs sm:text-sm font-bold transition-all ${histology === opt.v ? 'bg-blue-600 text-white border-blue-600 shadow' : 'bg-white text-blue-700 border-blue-200 hover:border-blue-400'}`}>{opt.l}</button>
+                 ))}
+               </div>
 
                {(histology === 'papilifero' || histology === 'folicular') && (
                  <>
-                   <label className="block text-sm font-bold text-blue-800 mb-2">Idade do Paciente no Diagnóstico (Corte AJCC 8):</label>
-                   <select value={ageCutoff} onChange={e => setAgeCutoff(e.target.value)} className="w-full p-2 border border-blue-300 rounded outline-none bg-white">
-                      <option value="maior_55">55 anos ou mais (≥ 55)</option>
-                      <option value="menor_55">Menos de 55 anos (&lt; 55)</option>
-                   </select>
+                   <label className="block text-sm font-bold text-blue-800 mb-3">Idade do Paciente no Diagnóstico (Corte AJCC 8):</label>
+                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                     <button onClick={() => setAgeCutoff('maior_55')} className={`p-3 rounded-lg border-2 text-sm font-bold transition-all ${ageCutoff === 'maior_55' ? 'bg-blue-600 text-white border-blue-600 shadow' : 'bg-white text-blue-700 border-blue-200 hover:border-blue-400'}`}>55 anos ou mais (≥ 55)</button>
+                     <button onClick={() => setAgeCutoff('menor_55')} className={`p-3 rounded-lg border-2 text-sm font-bold transition-all ${ageCutoff === 'menor_55' ? 'bg-blue-600 text-white border-blue-600 shadow' : 'bg-white text-blue-700 border-blue-200 hover:border-blue-400'}`}>Menos de 55 anos (&lt; 55)</button>
+                   </div>
                  </>
                )}
             </div>
@@ -263,25 +254,34 @@ export default function TnmCalc() {
             {((organ === 'tireoide' || organ === 'glandulas_salivares') || subsite) && (
               <div className="bg-slate-50 p-6 rounded-lg border border-slate-200 space-y-6">
                 <div>
-                  <label className="block text-md font-extrabold text-[#00A0AF] mb-2">T (Tumor Primário)</label>
-                  <select value={tValue} onChange={e => setTValue(e.target.value)} className="w-full p-3 border border-slate-300 rounded text-sm md:text-base font-medium outline-none focus:border-[#00A0AF]">
-                    <option value="">Selecione o tamanho/extensão (T)...</option>
-                    {getTOptions().map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-                  </select>
+                  <label className="block text-md font-extrabold text-[#00A0AF] mb-3">T (Tumor Primário)</label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {getTOptions().map(opt => (
+                      <button key={opt.value} onClick={() => setTValue(opt.value)} className={`text-left p-3 rounded-lg border-2 text-sm font-medium transition-all ${tValue === opt.value ? 'bg-[#00A0AF] text-white border-[#00A0AF] shadow-md' : 'bg-white text-slate-700 border-slate-200 hover:border-[#5CC6BA] hover:bg-slate-50'}`}>
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
                 <div>
-                  <label className="block text-md font-extrabold text-[#00A0AF] mb-2">N (Linfonodo Regional)</label>
-                  <select value={nValue} onChange={e => setNValue(e.target.value)} className="w-full p-3 border border-slate-300 rounded text-sm md:text-base font-medium outline-none focus:border-[#00A0AF]">
-                    <option value="">Selecione as metástases regionais (N)...</option>
-                    {getNOptions().map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-                  </select>
+                  <label className="block text-md font-extrabold text-[#00A0AF] mb-3">N (Linfonodo Regional)</label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {getNOptions().map(opt => (
+                      <button key={opt.value} onClick={() => setNValue(opt.value)} className={`text-left p-3 rounded-lg border-2 text-sm font-medium transition-all ${nValue === opt.value ? 'bg-[#00A0AF] text-white border-[#00A0AF] shadow-md' : 'bg-white text-slate-700 border-slate-200 hover:border-[#5CC6BA] hover:bg-slate-50'}`}>
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
                 <div>
-                  <label className="block text-md font-extrabold text-[#00A0AF] mb-2">M (Metástase à Distância)</label>
-                  <select value={mValue} onChange={e => setMValue(e.target.value)} className="w-full p-3 border border-slate-300 rounded text-sm md:text-base font-medium outline-none focus:border-[#00A0AF]">
-                    <option value="">Selecione as metástases à distância (M)...</option>
-                    {getMOptions().map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-                  </select>
+                  <label className="block text-md font-extrabold text-[#00A0AF] mb-3">M (Metástase à Distância)</label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {getMOptions().map(opt => (
+                      <button key={opt.value} onClick={() => setMValue(opt.value)} className={`text-left p-3 rounded-lg border-2 text-sm font-medium transition-all ${mValue === opt.value ? 'bg-[#00A0AF] text-white border-[#00A0AF] shadow-md' : 'bg-white text-slate-700 border-slate-200 hover:border-[#5CC6BA] hover:bg-slate-50'}`}>
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
                 
                 <div className="pt-4 border-t border-slate-200 text-center">

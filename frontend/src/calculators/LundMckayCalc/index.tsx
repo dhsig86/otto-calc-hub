@@ -91,17 +91,13 @@ export default function LundMckayCalc() {
             {LUND_SINUSES.map((sinus) => {
               const val = rightSide[sinus.id] || 0;
               return (
-                <div key={`R_${sinus.id}`} className="mb-4">
-                  <label className="block text-sm font-bold text-slate-700 mb-1">{sinus.label}</label>
-                  <select 
-                    value={val} 
-                    onChange={e => handleScoreChange('R', sinus.id, parseInt(e.target.value, 10))}
-                    className="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-[#00A0AF] bg-white outline-none"
-                  >
-                    <option value="0">0 - Normal</option>
-                    {!sinus.isOsteo && <option value="1">1 - Velamento Parcial</option>}
-                    <option value="2">2 - Velamento Total</option>
-                  </select>
+                <div key={`R_${sinus.id}`} className="mb-5">
+                  <label className="block text-sm font-bold text-slate-700 mb-2">{sinus.label}</label>
+                  <div className="flex gap-2">
+                    <button onClick={() => handleScoreChange('R', sinus.id, 0)} className={`flex-1 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-bold border-2 transition-all ${val === 0 ? 'bg-blue-600 text-white border-blue-600 shadow' : 'bg-white text-slate-600 border-slate-200 hover:border-blue-400'}`}>0 (Normal)</button>
+                    {!sinus.isOsteo && <button onClick={() => handleScoreChange('R', sinus.id, 1)} className={`flex-1 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-bold border-2 transition-all ${val === 1 ? 'bg-blue-600 text-white border-blue-600 shadow' : 'bg-white text-slate-600 border-slate-200 hover:border-blue-400'}`}>1 (Parcial)</button>}
+                    <button onClick={() => handleScoreChange('R', sinus.id, 2)} className={`flex-1 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-bold border-2 transition-all ${val === 2 ? 'bg-blue-600 text-white border-blue-600 shadow' : 'bg-white text-slate-600 border-slate-200 hover:border-blue-400'}`}>2 (Total)</button>
+                  </div>
                 </div>
               );
             })}
@@ -113,17 +109,13 @@ export default function LundMckayCalc() {
             {LUND_SINUSES.map((sinus) => {
               const val = leftSide[sinus.id] || 0;
               return (
-                <div key={`L_${sinus.id}`} className="mb-4">
-                  <label className="block text-sm font-bold text-slate-700 mb-1">{sinus.label}</label>
-                  <select 
-                    value={val} 
-                    onChange={e => handleScoreChange('L', sinus.id, parseInt(e.target.value, 10))}
-                    className="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-[#00A0AF] bg-white outline-none"
-                  >
-                    <option value="0">0 - Normal</option>
-                    {!sinus.isOsteo && <option value="1">1 - Velamento Parcial</option>}
-                    <option value="2">2 - Velamento Total</option>
-                  </select>
+                <div key={`L_${sinus.id}`} className="mb-5">
+                  <label className="block text-sm font-bold text-slate-700 mb-2">{sinus.label}</label>
+                  <div className="flex gap-2">
+                    <button onClick={() => handleScoreChange('L', sinus.id, 0)} className={`flex-1 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-bold border-2 transition-all ${val === 0 ? 'bg-green-600 text-white border-green-600 shadow' : 'bg-white text-slate-600 border-slate-200 hover:border-green-400'}`}>0 (Normal)</button>
+                    {!sinus.isOsteo && <button onClick={() => handleScoreChange('L', sinus.id, 1)} className={`flex-1 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-bold border-2 transition-all ${val === 1 ? 'bg-green-600 text-white border-green-600 shadow' : 'bg-white text-slate-600 border-slate-200 hover:border-green-400'}`}>1 (Parcial)</button>}
+                    <button onClick={() => handleScoreChange('L', sinus.id, 2)} className={`flex-1 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-bold border-2 transition-all ${val === 2 ? 'bg-green-600 text-white border-green-600 shadow' : 'bg-white text-slate-600 border-slate-200 hover:border-green-400'}`}>2 (Total)</button>
+                  </div>
                 </div>
               );
             })}

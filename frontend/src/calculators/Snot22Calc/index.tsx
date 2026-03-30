@@ -166,22 +166,25 @@ export default function Snot22Calc() {
                 </h3>
                 
                 <div className="ml-2 mb-6">
-                  <div className="flex justify-between text-xs text-slate-500 font-semibold mb-2 px-1">
+                  <div className="flex justify-between gap-1 sm:gap-2">
+                    {[0, 1, 2, 3, 4, 5].map((num) => (
+                      <button
+                        key={num}
+                        onClick={() => handleScoreChange(q.id, num)}
+                        className={`flex-1 py-3 sm:py-4 rounded-lg font-bold text-sm sm:text-base border-2 transition-all cursor-pointer ${
+                          val === num 
+                            ? 'bg-[#00A0AF] text-white border-[#00A0AF] shadow-md transform scale-105' 
+                            : 'bg-white text-slate-600 border-slate-200 hover:border-[#5CC6BA] hover:bg-slate-50'
+                        }`}
+                      >
+                        {num}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="flex justify-between text-[10px] sm:text-xs text-slate-400 font-semibold mt-2 px-1">
                     <span>Nenhum (0)</span>
                     <span>Moderado (3)</span>
                     <span>Grave (5)</span>
-                  </div>
-                  <input
-                    type="range"
-                    min="0"
-                    max="5"
-                    step="1"
-                    value={val}
-                    onChange={(e) => handleScoreChange(q.id, parseInt(e.target.value, 10))}
-                    className="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer accent-[#00A0AF]"
-                  />
-                  <div className="text-center mt-3 font-bold text-lg text-[#00A0AF]">
-                    Grau Selecionado: {val}
                   </div>
                 </div>
 

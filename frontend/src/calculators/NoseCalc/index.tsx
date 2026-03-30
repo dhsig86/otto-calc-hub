@@ -88,17 +88,28 @@ export default function NoseCalc() {
             return (
               <div key={idx} className="bg-slate-50 p-4 rounded border border-slate-200 shadow-sm border-l-4 border-l-[#5CC6BA]">
                 <h3 className="font-bold text-slate-700 mb-3">{idx + 1}. {q.text}</h3>
-                <div className="flex justify-between text-xs text-slate-500 mb-1 px-1 font-bold">
-                  <span>0 (Nada)</span>
-                  <span>2 (Moderado)</span>
-                  <span>4 (Grave)</span>
+                <div className="mt-3">
+                  <div className="flex justify-between gap-1 sm:gap-2">
+                    {[0, 1, 2, 3, 4].map((num) => (
+                      <button
+                        key={num}
+                        onClick={() => handleScoreChange(q.id, num)}
+                        className={`flex-1 py-3 sm:py-4 rounded-lg font-bold text-sm sm:text-base border-2 transition-all cursor-pointer ${
+                          val === num 
+                            ? 'bg-[#00A0AF] text-white border-[#00A0AF] shadow-md transform scale-105' 
+                            : 'bg-white text-slate-600 border-slate-200 hover:border-[#5CC6BA] hover:bg-slate-50'
+                        }`}
+                      >
+                        {num}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="flex justify-between text-[10px] sm:text-xs text-slate-400 font-semibold mt-2 px-1 uppercase tracking-wide">
+                    <span>0: Nada</span>
+                    <span>2: Moderado</span>
+                    <span>4: Grave</span>
+                  </div>
                 </div>
-                <input
-                  type="range" min="0" max="4" step="1"
-                  value={val} onChange={(e) => handleScoreChange(q.id, parseInt(e.target.value, 10))}
-                  className="w-full h-2 bg-slate-300 rounded cursor-pointer accent-[#00A0AF]"
-                />
-                <div className="text-center font-bold text-[#00A0AF] mt-2 text-sm">Problema Nível: {val}</div>
               </div>
             );
           })}

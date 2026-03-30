@@ -9,6 +9,7 @@ import PediatricDosesCalc from './calculators/PediatricDosesCalc';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'nose' | 'lund' | 'snot22' | 'sinusite' | 'tnm' | 'refluxo' | 'pediatria'>('nose');
+  const [doctorId, setDoctorId] = useState('');
 
   const calculators = [
     { id: 'sinusite', name: 'Sinusite (EPOS/AAO)' },
@@ -22,10 +23,20 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col font-sans text-slate-900">
-      <header className="bg-[#00A0AF] text-white p-6 md:px-10 shadow-md flex justify-between items-center z-10 relative">
-        <div>
+      <header className="bg-[#00A0AF] text-white p-6 md:px-10 shadow-md flex flex-col md:flex-row justify-between items-center z-10 relative gap-4">
+        <div className="text-center md:text-left">
           <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">OTTO CALC-HUB</h1>
           <p className="text-[#5CC6BA] font-medium mt-1 text-sm md:text-base">Painel Central de Escore e Diagnóstico</p>
+        </div>
+        <div className="flex items-center bg-white/10 p-2 rounded-lg border border-white/20">
+           <span className="mr-3 text-sm font-bold opacity-90 hidden sm:inline">Médico Responsável:</span>
+           <input 
+             type="text" 
+             value={doctorId} 
+             onChange={(e) => setDoctorId(e.target.value)} 
+             placeholder="CRM, ID ou Nome" 
+             className="px-3 py-1.5 rounded text-slate-800 text-sm font-semibold outline-none focus:ring-2 focus:ring-white w-48 shadow-inner"
+           />
         </div>
       </header>
       
