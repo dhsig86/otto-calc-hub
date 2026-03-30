@@ -3,9 +3,10 @@ import LundMckayCalc from './calculators/LundMckayCalc';
 import NoseCalc from './calculators/NoseCalc';
 import Snot22Calc from './calculators/Snot22Calc';
 import SinusiteCalc from './calculators/SinusiteCalc';
+import TnmCalc from './calculators/TnmCalc';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'nose' | 'lund' | 'snot22' | 'sinusite'>('nose');
+  const [activeTab, setActiveTab] = useState<'nose' | 'lund' | 'snot22' | 'sinusite' | 'tnm'>('nose');
 
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col font-sans text-slate-900">
@@ -43,6 +44,12 @@ export default function App() {
           >
             Sinusite (EPOS/AAO)
           </button>
+          <button 
+            onClick={() => setActiveTab('tnm')}
+            className={`px-6 py-4 rounded-t-xl font-bold transition-all text-sm md:text-base flex-1 md:flex-none max-w-xs ${activeTab === 'tnm' ? 'bg-white text-[#00A0AF] border-t-4 border-[#00A0AF] shadow-sm transform translate-y-[2px]' : 'bg-slate-200 text-slate-500 hover:bg-slate-300'}`}
+          >
+            TNM (Oncologia)
+          </button>
         </div>
 
         {/* Content Area */}
@@ -51,6 +58,7 @@ export default function App() {
           {activeTab === 'lund' && <LundMckayCalc />}
           {activeTab === 'snot22' && <Snot22Calc />}
           {activeTab === 'sinusite' && <SinusiteCalc />}
+          {activeTab === 'tnm' && <TnmCalc />}
         </div>
       </main>
 
