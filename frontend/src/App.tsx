@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import LundMckayCalc from './calculators/LundMckayCalc';
 import NoseCalc from './calculators/NoseCalc';
 import Snot22Calc from './calculators/Snot22Calc';

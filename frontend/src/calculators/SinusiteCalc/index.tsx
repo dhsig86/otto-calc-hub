@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { 
   EPOS_SYMPTOMS, 
   AAO_SYMPTOMS, 
