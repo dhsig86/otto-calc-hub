@@ -232,6 +232,12 @@ export default function Snot22Calc() {
         </div>
 
       </div>
+
+      {/* REFERÊNCIA ACADÊMICA */}
+      <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 shadow-sm text-xs text-slate-500 text-center mt-6">
+        <p className="font-bold mb-1">Referência Científica Padrão-Ouro:</p>
+        <p className="italic">Hopkins C, Gillett S, Slack R, Lund VJ, Browne JP. Psychometric validity of the 22-item Sinonasal Outcome Test. Clin Otolaryngol. 2009;34(5):447-454. doi:10.1111/j.1749-4486.2009.01995.x</p>
+      </div>
     </div>
   );
 }

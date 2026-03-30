@@ -172,6 +172,13 @@ export default function SinusiteCalc() {
         )}
 
       </div>
+
+      {/* REFERÊNCIA ACADÊMICA */}
+      <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 shadow-sm text-xs text-slate-500 text-center mt-6">
+        <p className="font-bold mb-1">Referências Científicas Padrão-Ouro:</p>
+        <p className="italic mb-1">1. Fokkens WJ, et al. European Position Paper on Rhinosinusitis and Nasal Polyps 2012. Eur Arch Otorhinolaryngol. 2012.</p>
+        <p className="italic">2. Rosenfeld RM, et al. Clinical Practice Guideline (Update): Adult Sinusitis. Otolaryngol Head Neck Surg. 2015;152(2 Suppl):S1-S39.</p>
+      </div>
     </div>
   );
 }
