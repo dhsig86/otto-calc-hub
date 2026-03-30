@@ -4,9 +4,21 @@ import NoseCalc from './calculators/NoseCalc';
 import Snot22Calc from './calculators/Snot22Calc';
 import SinusiteCalc from './calculators/SinusiteCalc';
 import TnmCalc from './calculators/TnmCalc';
+import RefluxCalc from './calculators/RefluxCalc';
+import PediatricDosesCalc from './calculators/PediatricDosesCalc';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'nose' | 'lund' | 'snot22' | 'sinusite' | 'tnm'>('nose');
+  const [activeTab, setActiveTab] = useState<'nose' | 'lund' | 'snot22' | 'sinusite' | 'tnm' | 'refluxo' | 'pediatria'>('nose');
+
+  const calculators = [
+    { id: 'sinusite', name: 'Sinusite (EPOS/AAO)' },
+    { id: 'nose', name: 'Escala NOSE' },
+    { id: 'lund', name: 'Lund-Mackay (TC)' },
+    { id: 'snot22', name: 'SNOT-22' },
+    { id: 'tnm', name: 'Estadiamento TNM' },
+    { id: 'refluxo', name: 'RSI (Refluxo)' },
+    { id: 'pediatria', name: 'Doses Infantis' }
+  ];
 
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col font-sans text-slate-900">
@@ -20,36 +32,15 @@ export default function App() {
       <main className="flex-grow p-4 sm:p-8 max-w-7xl mx-auto w-full flex flex-col items-center">
         {/* Navigation Tabs */}
         <div className="flex flex-wrap justify-center w-full gap-2 mb-8 border-b-2 border-slate-200 pb-2 relative z-0">
-          <button 
-            onClick={() => setActiveTab('nose')}
-            className={`px-6 py-4 rounded-t-xl font-bold transition-all text-sm md:text-base flex-1 md:flex-none max-w-xs ${activeTab === 'nose' ? 'bg-white text-[#00A0AF] border-t-4 border-[#00A0AF] shadow-sm transform translate-y-[2px]' : 'bg-slate-200 text-slate-500 hover:bg-slate-300'}`}
-          >
-            NOSE
-          </button>
-          <button 
-            onClick={() => setActiveTab('lund')}
-            className={`px-6 py-4 rounded-t-xl font-bold transition-all text-sm md:text-base flex-1 md:flex-none max-w-xs ${activeTab === 'lund' ? 'bg-white text-[#00A0AF] border-t-4 border-[#00A0AF] shadow-sm transform translate-y-[2px]' : 'bg-slate-200 text-slate-500 hover:bg-slate-300'}`}
-          >
-            Lund-Mackay (TC)
-          </button>
-          <button 
-            onClick={() => setActiveTab('snot22')}
-            className={`px-6 py-4 rounded-t-xl font-bold transition-all text-sm md:text-base flex-1 md:flex-none max-w-xs ${activeTab === 'snot22' ? 'bg-white text-[#00A0AF] border-t-4 border-[#00A0AF] shadow-sm transform translate-y-[2px]' : 'bg-slate-200 text-slate-500 hover:bg-slate-300'}`}
-          >
-            SNOT-22
-          </button>
-          <button 
-            onClick={() => setActiveTab('sinusite')}
-            className={`px-6 py-4 rounded-t-xl font-bold transition-all text-sm md:text-base flex-1 md:flex-none max-w-xs ${activeTab === 'sinusite' ? 'bg-white text-[#00A0AF] border-t-4 border-[#00A0AF] shadow-sm transform translate-y-[2px]' : 'bg-slate-200 text-slate-500 hover:bg-slate-300'}`}
-          >
-            Sinusite (EPOS/AAO)
-          </button>
-          <button 
-            onClick={() => setActiveTab('tnm')}
-            className={`px-6 py-4 rounded-t-xl font-bold transition-all text-sm md:text-base flex-1 md:flex-none max-w-xs ${activeTab === 'tnm' ? 'bg-white text-[#00A0AF] border-t-4 border-[#00A0AF] shadow-sm transform translate-y-[2px]' : 'bg-slate-200 text-slate-500 hover:bg-slate-300'}`}
-          >
-            TNM (Oncologia)
-          </button>
+          {calculators.map((calc) => (
+            <button 
+              key={calc.id}
+              onClick={() => setActiveTab(calc.id as any)}
+              className={`px-6 py-4 rounded-t-xl font-bold transition-all text-sm md:text-base flex-1 md:flex-none max-w-xs ${activeTab === calc.id ? 'bg-white text-[#00A0AF] border-t-4 border-[#00A0AF] shadow-sm transform translate-y-[2px]' : 'bg-slate-200 text-slate-500 hover:bg-slate-300'}`}
+            >
+              {calc.name}
+            </button>
+          ))}
         </div>
 
         {/* Content Area */}
@@ -59,6 +50,8 @@ export default function App() {
           {activeTab === 'snot22' && <Snot22Calc />}
           {activeTab === 'sinusite' && <SinusiteCalc />}
           {activeTab === 'tnm' && <TnmCalc />}
+          {activeTab === 'refluxo' && <RefluxCalc />}
+          {activeTab === 'pediatria' && <PediatricDosesCalc />}
         </div>
       </main>
 
