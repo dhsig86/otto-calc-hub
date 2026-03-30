@@ -1,0 +1,123 @@
+Plano de arquitetura para o OTTO CALC‑HUB
+1. Contexto e objetivos
+O OTTO CALC‑HUB tem como meta disponibilizar em um único repositório todas as calculadoras e questionários de diagnóstico/monitoramento existentes no ecossistema de otorrinolaringologia. Atualmente esses projetos estão dispersos, utilizam HTML/CSS/JavaScript simples e não seguem uma paleta de cores ou estrutura padronizada. Além de centralizar e normalizar os projetos, pretende‑se integrar os resultados ao painel médico do OTTO Triagem e, futuramente, expor uma API para aplicações de terceiros ou estudos científicos.
+Para atender a esses objetivos é necessário:
+Reunir e padronizar as calculadoras existentes;
+Definir uma arquitetura de front‑end com paleta de cores consistente e acessível;
+Criar um back‑end para armazenar resultados e expô‑los via API;
+Pensar na governança e interoperabilidade dos dados para futuras integrações.
+2. Inventário de calculadoras existentes
+Os arquivos enviados contêm sete calculadoras/questões em formatos variados. A tabela a seguir resume o conteúdo e o estado atual de cada pasta:
+Calculadora
+Linguagens/estrutura principais
+Observações
+CALC SINUSITE
+HTML estático, CSS e arquivo JS com lógica de sintomas/percentual de chance de sinusite.
+Implementa diretrizes EPOS e AAO‑HNSF; o JavaScript contém funções de cálculo de probabilidade e geração de tabela de sintomas.
+CALCULADORA DE REFLUXO LARINGOFARINGEO
+HTML com campo de entrada e JS para somar pontuações.
+Simples, com poucas dependências.
+Calculadora NOSE
+HTML com controles deslizantes (sliders) e JavaScript para calcular escore do índice NOSE.
+O layout utiliza imagens e CSS próprios.
+Calculadora SNOT‑20
+HTML com formulário e JS para pontuações de 20 perguntas; inclui pastas images, scripts e styles.
+Já tem alguma organização de pastas, mas a paleta é diferente das demais.
+Calculadora de Doses Pediátricas
+HTML/CSS/JS. Várias versões de scripts (scrap.js, scrap2.js) sugerem experimentação.
+Necessita refatoração para remover códigos não utilizados.
+Lund Mckay Calc
+HTML, CSS e JS para calcular escore de Lund‑Mackay em tomografia.
+Simples, sem dependências externas.
+TNM CLASSIF APP
+Projeto mais complexo, com múltiplas páginas HTML (cavidade oral, laringe, tireoide etc.), scripts de classificação e um venv Python.
+Provavelmente serve como referência para estruturação de navegabilidade e poderá ser integrado como questionário de classificação TNM.
+Apesar de heterogêneas, todas as calculadoras utilizam lógica de cálculo relativamente simples em JavaScript; isso facilita a extração das funções de cálculo e sua encapsulação em componentes reutilizáveis.
+3. Diretrizes de design e paleta de cores
+Acessibilidade e clareza. Aplicações médicas devem suportar múltiplos perfis (pacientes, médicos, administradores) e funcionar em contextos de alta pressão. Um guia de UI/UX de 2026 para saúde ressalta que a interface deve ser clara, com fluxos que reduzem a carga cognitiva e ofereçam acessibilidade para diferentes papéis[1]. Além disso, as aplicações precisam garantir contraste, legibilidade e conformidade com normas como WCAG e HIPAA.
+Paleta e psicologia das cores. O estudo sobre cores em branding médico (2025) recomenda equilibrar tons tradicionais (azul/branco) com cores de apoio, considerando acessibilidade, inclusão cultural e adequação ao meio digital[2]. O mesmo artigo destaca que a adaptação digital exige tons que funcionem em dark mode e mobile, mantenham contrastes adequados e transmitam calma e confiança[3].
+Paleta proposta. O usuário especificou as cores #5CC6BA, #00A0AF e #00BCD4 como base. Para aderir às recomendações de design:
+Cor primária: #00A0AF (um tom de azul‑esverdeado). Transmite confiança e está alinhado ao azul tradicional das marcas de saúde[4].
+Cor secundária: #5CC6BA (verde aqua). Complementa a primária e adiciona sensação de bem‑estar e inovação[5].
+Cor de destaque: #00BCD4 (ciano mais claro). Utilizada para elementos interativos, ícones e indicadores de progresso.
+Cores de apoio: cinza claro para fundos e preto/cinza escuro para textos. Devem atender às razões de contraste (AA/AAA). Ferramentas como contrast-ratio.com podem auxiliar na verificação.
+Para consistência, recomenda‑se criar uma folha de estilos global (por exemplo, theme.css ou um objeto de tema em frameworks como Material UI/Tailwind) contendo variáveis das cores, tipografia e espaçamentos. Assim, todas as calculadoras herdarão o mesmo visual e permitirão atualização centralizada.
+4. Arquitetura proposta
+4.1. Visão geral
+O OTTO CALC‑HUB deverá ser um projeto dividido em front‑end e back‑end. O front‑end exibe as calculadoras e questionários; o back‑end armazena resultados e disponibiliza APIs para outras aplicações (como o painel médico do OTTO Triagem). A figura abaixo descreve os principais módulos (textual porque este documento é Markdown):
+┌───────────────────────────┐│          Front‑end        ││  (React/Next.js)          ││                           ││ • UI comum (nav, header)  ││ • Calculators (modules)    ││ • PROMs (questionnaires)   ││ • Auth/role handling       │└───────────────▲───────────┘                │ API calls┌───────────────┴───────────┐│          Back‑end         ││ (Node.js/Express ou Flask) ││                           ││ • Endpoints REST/FHIR      ││ • Banco de dados           ││ • Lógica de autenticação   ││ • Exportação de relatórios │└───────────────────────────┘
+4.2. Front‑end
+Framework: recomenda‑se React (com Next.js) ou outro framework moderno (Vue ou Angular) que facilite a construção de componentes reutilizáveis. Esses frameworks suportam SPA e SSR, facilitando performance e SEO.
+Componentização: cada calculadora será convertida em um componente isolado. Por exemplo, um componente SinusiteCalc recebe as respostas do usuário, utiliza as funções de cálculo existentes (extraídas dos arquivos JS) e retorna o resultado. Os componentes devem seguir o mesmo padrão de layout (cards, formulários, botões) e usar o tema global.
+Gerenciamento de estado: utilizar contexto (React Context ou Redux) para armazenar temporariamente as respostas do usuário antes de enviá‑las ao back‑end.
+Roteamento: uma página de listagem apresentará todas as calculadoras e PROMs disponíveis. Cada item abrirá um componente específico (via rota /calc/sinusite, /calc/nose, etc.).
+Acessibilidade: empregar práticas WCAG (etiquetas associadas, navegação por teclado, alto contraste) para todos os componentes[1].
+Internacionalização: estruturar mensagens e rótulos em arquivos de tradução (por exemplo, pt-BR.json) para permitir suporte futuro a outros idiomas.
+Validação de entradas: validar todos os campos antes de calcular; erros devem ser exibidos de forma discreta e acessível.
+4.3. Back‑end
+Linguagem: Node.js com Express ou Python com Flask/FastAPI. A escolha deve considerar a familiaridade da equipe e integração com serviços existentes. Ambas permitem criar rapidamente endpoints REST e possuem bibliotecas para autenticação.
+Modelos de dados: criar tabelas/coleções para armazenar:
+Pacientes (id, identificação pseudonimizada, idade, sexo, etc.).
+Calculadoras (id, nome, versão, descrição).
+Resultados (id, calculadora_id, paciente_id, data/hora, respostas brutas, escore final, criador). Os dados devem ser versionados para possibilitar auditoria.
+API: disponibilizar endpoints POST /results para envio de resultados e GET /results para consulta. Incluir filtros por paciente, calculadora e data. Para interoperabilidade, adotar padrões FHIR quando aplicável (por exemplo, representar questionários como Questionnaire e respostas como QuestionnaireResponse). O guia de integração de dados de saúde recomenda adoção de padrões abertos (ex.: FHIR) e tecnologia apropriada para garantir interoperabilidade e segurança[6].
+Segurança: implementar autenticação (JWT ou OAuth2), autorização baseada em papéis (médico, pesquisador, administrador) e criptografia de dados sensíveis. Assegurar que apenas usuários autorizados possam gravar ou ler resultados (HIPAA/GDPR).
+Persistência: utilizar banco de dados relacional (PostgreSQL) para dados estruturados e JSON para respostas. MongoDB também é opção caso se prefira esquema flexível para questionários.
+Integração com OTTO Triagem: criar endpoints específicos para que o painel médico consulte resultados em tempo real ou receba notificações (webhooks) quando um novo cálculo é concluído. A integração deve seguir boas práticas de governança de dados, com formatos padronizados, controle de qualidade e segurança[6].
+4.4. Estrutura do repositório
+No GitHub, o repositório OTTO CALC‑HUB pode ser organizado da seguinte forma:
+otto-calc-hub/├─ frontend/│  ├─ public/              # Arquivos estáticos (imagens, ícones)│  ├─ src/│  │  ├─ components/       # Botões, inputs, cards, tabelas, etc.│  │  ├─ calculators/│  │  │  ├─ SinusiteCalc/│  │  │  │  ├─ index.tsx   # Componente React│  │  │  │  ├─ logic.ts    # Funções de cálculo extraídas de sinusite.js│  │  │  │  └─ styles.ts   # Estilos específicos usando o tema global│  │  │  ├─ RefluxCalc/│  │  │  └─ ...            # Outras calculadoras│  │  ├─ prom/             # Questionários PROMs│  │  ├─ context/          # Estado global (auth, resultados temporários)│  │  ├─ theme/            # Variáveis de cores, tipografia│  │  ├─ routes.tsx        # Roteador│  │  └─ App.tsx│  └─ package.json├─ backend/│  ├─ src/│  │  ├─ controllers/      # Lógica dos endpoints│  │  ├─ models/           # Esquemas de banco│  │  ├─ routes/           # Definição das rotas│  │  └─ app.js            # Inicialização do servidor│  ├─ .env.example         # Variáveis de ambiente│  └─ package.json / pyproject.toml├─ scripts/│  └─ migrate_calcs.js     # Scripts de importação de dados antigos (opcional)├─ docs/│  ├─ API.md               # Documentação das rotas do back‑end│  ├─ calculators.md       # Descrição de cada cálculo e referências clínicas│  └─ CONTRIBUTING.md      # Guia para contribuidores└─ README.md
+Essa estrutura separa claramente o front‑end e o back‑end, facilitando a manutenção e a colaboração. As calculadoras e questionários ficam em pastas individuais, cada uma com sua lógica de cálculo isolada (logic.ts) e interface (index.tsx). A pasta theme centraliza as cores e estilos comuns.
+5. Integração e normalização das calculadoras
+5.1. Extração da lógica
+Cada arquivo JavaScript existente contém a função de cálculo específica; por exemplo, em CALC SINUSITE as funções calculateChance retornam o percentual de chance com base nos sintomas selecionados. Para reutilizar essa lógica em React:
+// frontend/src/calculators/SinusiteCalc/logic.tsexport function calculateSinusiteEPOS(symptoms: string[]): number {  // lógica extraída de sinusite.js  if (symptoms.includes('Sintomas graves ou sintomas durando mais de 10 dias')) {    return 95;  }  // … demais condições …  return 0;}export function calculateSinusiteAAO(symptoms: string[]): number {  // … extraído de sinusite.js …}
+No componente React, esses métodos são importados e utilizados quando o usuário envia o formulário. Os dados são então enviados ao back‑end via fetch('/results', ...).
+5.2. Padronização de formulários
+Inputs: usar componentes reutilizáveis para checkboxes, sliders e campos numéricos. Isso garante consistência visual e facilita adaptação para dispositivos móveis.
+Validação: aplicar validações antes de chamar a função de cálculo; apresentar mensagens de erro acessíveis se campos obrigatórios estiverem vazios.
+Exibição de resultados: utilizar um componente comum (ResultCard) que recebe o resultado numérico e o interpreta (por exemplo, “Chance de sinusite bacteriana: 70%”). Em questionários como SNOT‑22 ou NOSE, o resultado pode ser classificado (leve, moderado, severo).
+Navegação: adicionar breadcrumbs ou barra de progresso para questionários longos, permitindo que o usuário acompanhe seu avanço.
+5.3. Dados e metadados
+Para permitir análise futura, cada resultado deve ser acompanhado de metadados, como:
+Identificador do cálculo (nome, versão);
+Data/hora de realização;
+Identificador do usuário/paciente (pseudonimizado);
+Parâmetros de entrada (respostas individuais);
+Escore final e interpretação.
+Esses dados possibilitam auditoria e construção de dashboards. A integração de dados de saúde eficiente exige governança clara, formatos padronizados e colaboração entre áreas, conforme destacado pelo guia de integração[6].
+6. Integração com OTTO Triagem e outras aplicações
+Para que o painel médico do OTTO Triagem consuma os resultados das calculadoras em tempo real:
+Endpoints específicos: implementar rotas no back‑end como GET /patients/{id}/results para obter todos os resultados de um paciente e GET /calculators/{id}/results para obter histórico de um cálculo. Esses endpoints podem retornar dados em formato JSON ou FHIR QuestionnaireResponse.
+Webhooks/eventos: opcionalmente, emitir eventos (por exemplo, via WebSocket ou serviço de mensagens) sempre que um novo cálculo for realizado. O painel poderia assinar esses eventos para atualizar dados em tempo real.
+Autenticação integrada: caso o OTTO Triagem já possua sistema de login, considerar Single Sign‑On (SSO) usando OAuth2/OIDC para que médicos acessem o hub sem múltiplos logins.
+Exportação de dados: permitir exportar resultados em formatos CSV ou FHIR para estudos científicos. Essa prática promove interoperabilidade e transparência. O guia de integração destaca que padrões de dados e tecnologias apropriadas são essenciais para o sucesso de integrações[6].
+7. Governança, segurança e conformidade
+Projetos de saúde lidam com dados sensíveis; portanto, é fundamental assegurar:
+Governança de dados: definir papéis claros (quem pode criar, editar, visualizar resultados) e processos de qualidade. O guia de integração enfatiza que a ausência de governança pode gerar caos e riscos de compliance[6].
+Segurança: criptografia em trânsito (HTTPS) e em repouso, autenticação forte (dois fatores) e monitoramento de acesso. Logs de auditoria devem registrar todas as interações.
+Anonimização/pseudonimização: ao armazenar dados de pacientes para estudos, remover identificadores diretos e utilizar IDs aleatórios.
+Adequação legal: cumprir normas locais (LGPD no Brasil), HIPAA (caso haja integração internacional) e regulamentações de pesquisa.
+Acessibilidade digital: seguir WCAG 2.1 ou superior, garantindo que pessoas com deficiência possam utilizar as calculadoras. O guia de UI para saúde reforça que interfaces precisam ser acessíveis e capazes de reduzir a carga cognitiva[1].
+8. Passos recomendados para implementação
+Criar o repositório “otto‑calc‑hub” no GitHub (pode ser privado inicialmente). Definir políticas de branch, issues e PRs.
+Configurar ambiente de desenvolvimento para front‑end (Node.js/NPM) e back‑end (Node.js ou Python). Criar templates de commit e linting.
+Construir a base do front‑end: implementar tema global com as cores definidas, componentes básicos (botões, inputs) e página de listagem de calculadoras.
+Migrar cada calculadora:
+Analisar o código existente, extraindo as funções de cálculo para módulos TypeScript/JavaScript;
+Criar um componente React com o mesmo fluxo (inputs, cálculo, exibição) utilizando o tema global;
+Adicionar testes unitários para garantir a equivalência com o comportamento original.
+Desenvolver o back‑end: definir esquemas de banco, implementar endpoints e autenticação. Iniciar com armazenamento local (SQLite ou arquivo JSON) e evoluir para PostgreSQL/MongoDB conforme necessário.
+Implementar integração: criar chamadas API no front‑end para enviar resultados após cada cálculo. Configurar CORS e tokens de autenticação.
+Documentar: escrever documentação detalhada das rotas, estruturas de dados e guias clínicos. Incluir referências bibliográficas e indicações de validação clínica para cada calculadora (PROMs e scores). A documentação é essencial para confiança e adoção.
+Hospedagem e deploy: utilizar serviços como Render ou Vercel para o front‑end e back‑end. Configurar CI/CD no GitHub (actions) para automatizar testes e deploy.
+Testes de usabilidade e acessibilidade: envolver médicos e pacientes em testes de interface, ajustando fluxos para reduzir a carga cognitiva e garantir clareza[1].
+Evolução para FHIR: quando estiver estável, avaliar a serialização das respostas em padrão FHIR (Questionnaire e QuestionnaireResponse) para facilitar integrações com outros sistemas clínicos.
+9. Conclusão
+Centralizar todas as calculadoras e PROMs em um hub bem estruturado melhora a organização, reduz redundância e oferece base sólida para integrações futuras. Utilizar um front‑end moderno com componentes reutilizáveis e uma paleta de cores consistente garante experiência coesa e acessível. Um back‑end robusto com API padronizada permite armazenar resultados, exportá‑los para o painel médico do OTTO Triagem e para estudos clínicos, alinhando‑se às melhores práticas de integração de dados de saúde[6]. Seguindo os passos propostos neste plano, será possível transformar as calculadoras antigas em um ecossistema modular e interoperável, pronto para evoluir junto com as necessidades clínicas e de pesquisa.
+[1] Healthcare UI Design 2026: Best Practices + Examples
+https://www.eleken.co/blog-posts/user-interface-design-for-healthcare-applications
+[2] [3] [4] [5] The Art of Medical Colors for Healthcare Branding in 2025 | ThinkPod Agency
+https://thinkpodagency.com/the-art-of-medical-colors-in-healthcare-branding-in-2025/
+[6] Healthcare Data Integration Guide: Best Practices for 2025 - Pi Tech
+https://pi.tech/blog/healthcare-data-integration-guide

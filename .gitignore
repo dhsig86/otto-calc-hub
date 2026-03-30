@@ -1,0 +1,21 @@
+# Node
+node_modules/
+dist/
+build/
+coverage/
+
+# Python / Backend
+__pycache__/
+*.pyc
+*.pyo
+venv/
+env/
+backend/otto_calc.db
+
+# Legado (Temp)
+temp_calcs/
+*.zip
+
+# OS Files
+.DS_Store
+Thumbs.db
