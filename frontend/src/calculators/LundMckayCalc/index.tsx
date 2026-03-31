@@ -32,7 +32,7 @@ export default function LundMckayCalc({ patientId, doctorId }: Props) {
     const scoreTotal = scoreL + scoreR;
 
     try {
-      await fetch(`${API_BASE_URL}/api/results', {
+      await fetch(`${API_BASE_URL}/api/results`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -91,7 +91,7 @@ export default function LundMckayCalc({ patientId, doctorId }: Props) {
     <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
       <h3 className="text-lg font-bold text-center mb-5 py-2 rounded" style={{backgroundColor: `${color}20`, color}}>{label}</h3>
       {LUND_SINUSES.map((sinus) => {
-        const val = state[sinus.id] || 0;
+        const val = state[sinus.id];
         const btnColor = side === 'R' ? 'blue' : 'green';
         const activeClass = `bg-${btnColor}-600 text-white border-${btnColor}-600 shadow`;
         const inactiveClass = `bg-white text-${btnColor}-700 border-${btnColor === 'blue' ? 'blue' : 'green'}-200 hover:border-${btnColor}-400`;
@@ -135,7 +135,11 @@ export default function LundMckayCalc({ patientId, doctorId }: Props) {
               {calculatePartial(rightSide) + calculatePartial(leftSide)}
             </span> / 24
           </div>
-          <button onClick={handleSubmit} className="px-8 py-3 bg-[#00A0AF] hover:bg-[#00BCD4] text-white font-bold rounded-lg shadow transition-all">
+          <button 
+            disabled={Object.keys(rightSide).length < 6 || Object.keys(leftSide).length < 6}
+            onClick={handleSubmit} 
+            className="px-8 py-3 bg-[#00A0AF] hover:bg-[#00BCD4] text-white font-bold rounded-lg shadow transition-all disabled:opacity-50"
+          >
             Calcular Lund-Mackay
           </button>
         </div>

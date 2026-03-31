@@ -33,7 +33,7 @@ export default function SinusiteCalc({ patientId, doctorId }: Props) {
     const chance = guideline === 'EPOS' ? calculateEposChance(symptomsArray) : calculateAaoChance(symptomsArray);
 
     try {
-      await fetch(`${API_BASE_URL}/api/results', {
+      await fetch(`${API_BASE_URL}/api/results`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

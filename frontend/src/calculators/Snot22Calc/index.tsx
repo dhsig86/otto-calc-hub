@@ -43,7 +43,7 @@ export default function Snot22Calc({ patientId, doctorId }: Props) {
     const topSymptomsArray = Array.from(topSymptoms).map(id => SNOT22_QUESTIONS.find(q => q.id === id)?.text || id);
 
     try {
-      await fetch(`${API_BASE_URL}/api/results', {
+      await fetch(`${API_BASE_URL}/api/results`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -124,7 +124,7 @@ export default function Snot22Calc({ patientId, doctorId }: Props) {
         {/* Perguntas */}
         <div className="space-y-8 min-h-[400px]">
           {currentQuestions.map((q) => {
-            const val = (answers as any)[q.id] || 0;
+            const val = (answers as any)[q.id];
             const isTop = topSymptoms.has(q.id);
             return (
               <div key={q.id} className="bg-slate-50 p-5 rounded-lg border border-slate-200 relative overflow-hidden">
@@ -160,7 +160,11 @@ export default function Snot22Calc({ patientId, doctorId }: Props) {
           {currentGroup < maxGroups ? (
             <button onClick={() => setCurrentGroup(g => g + 1)} className="px-8 py-3 bg-[#00A0AF] hover:bg-[#00BCD4] text-white font-bold rounded-lg shadow-md">Próximo →</button>
           ) : (
-            <button onClick={handleSubmit} disabled={isSubmitting} className="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg shadow-md">
+            <button 
+              disabled={isSubmitting || Object.keys(answers).length < SNOT22_QUESTIONS.length} 
+              onClick={handleSubmit} 
+              className="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg shadow-md disabled:opacity-50"
+            >
               {isSubmitting ? 'Gravando...' : 'Finalizar e Calcular'}
             </button>
           )}

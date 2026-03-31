@@ -87,7 +87,7 @@ export default function TnmCalc({ patientId }: Props) {
     };
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/results', {
+      const response = await fetch(`${API_BASE_URL}/api/results`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

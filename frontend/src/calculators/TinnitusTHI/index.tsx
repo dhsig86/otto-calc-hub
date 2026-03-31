@@ -24,7 +24,7 @@ export default function TinnitusTHI({ patientId, doctorId }: Props) {
     const cl = getTHIClassification(score);
     setResult({ score, ...cl });
     try {
-      await fetch(`${API_BASE_URL}/api/results', {
+      await fetch(`${API_BASE_URL}/api/results`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ patient_id: patientId || 'anon_thi', doctor_id: doctorId || null, calc_type: 'thi_25', score, raw_answers: answers, hub_version: '1.3.0' })

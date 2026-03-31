@@ -63,7 +63,7 @@ export default function PediatricDosesCalc({ patientId, doctorId }: Props) {
 
     setResult(output);
     try {
-      fetch(`${API_BASE_URL}/api/results', {
+      fetch(`${API_BASE_URL}/api/results`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

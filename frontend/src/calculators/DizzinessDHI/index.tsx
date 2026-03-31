@@ -24,7 +24,7 @@ export default function DizzinessDHI({ patientId, doctorId }: Props) {
     const cl = getDHIClassification(score);
     setResult({ score, ...cl });
     try {
-      await fetch(`${API_BASE_URL}/api/results', {
+      await fetch(`${API_BASE_URL}/api/results`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ patient_id: patientId || 'anon_dhi', doctor_id: doctorId || null, calc_type: 'dhi_25', score, raw_answers: answers, hub_version: '1.3.0' })

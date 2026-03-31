@@ -16,7 +16,7 @@ export default function DysphagiaEAT10({ patientId, doctorId }: Props) {
     const cl = getEAT10Classification(score);
     setResult({ score, ...cl });
     try {
-      await fetch(`${API_BASE_URL}/api/results', {
+      await fetch(`${API_BASE_URL}/api/results`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ patient_id: patientId || 'anon_eat10', doctor_id: doctorId || null, calc_type: 'eat10', score, raw_answers: answers, hub_version: '1.3.0' })

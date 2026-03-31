@@ -35,7 +35,7 @@ export default function RefluxCalc({ patientId, doctorId }: Props) {
     const classInfo = getClassification(score);
 
     try {
-      await fetch(`${API_BASE_URL}/api/results', {
+      await fetch(`${API_BASE_URL}/api/results`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -94,7 +94,7 @@ export default function RefluxCalc({ patientId, doctorId }: Props) {
             Nos últimos 30 dias, qual o nível de impacto dos problemas abaixo? (0 = Nenhum, 5 = Grave)
           </p>
           {REFLUX_QUESTIONS.map((q) => {
-            const val = answers[q.id] || 0;
+            const val = answers[q.id];
             return (
               <div key={q.id} className="bg-white p-4 rounded-lg border border-slate-100 hover:bg-slate-50 transition-colors">
                 <h3 className="font-semibold text-slate-700 mb-3 text-sm">{q.text}</h3>
@@ -116,7 +116,11 @@ export default function RefluxCalc({ patientId, doctorId }: Props) {
         </div>
 
         <div className="flex justify-center border-t border-slate-200 pt-6">
-          <button onClick={handleSubmit} className="px-8 py-3 bg-[#00A0AF] hover:bg-[#00BCD4] text-white font-bold rounded-lg shadow transition-all w-full sm:w-auto">
+          <button 
+            disabled={Object.keys(answers).length < REFLUX_QUESTIONS.length}
+            onClick={handleSubmit} 
+            className="px-8 py-3 bg-[#00A0AF] hover:bg-[#00BCD4] text-white font-bold rounded-lg shadow transition-all w-full sm:w-auto disabled:opacity-50"
+          >
             Calcular RSI
           </button>
         </div>
