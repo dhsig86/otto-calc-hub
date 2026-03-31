@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { API_BASE_URL } from '../../config';
 import { STOPBANG_QUESTIONS, STOPBANG_OPTIONS, getSTOPBangClassification, REFERENCE_STOPBANG } from './logic';
 
 interface Props { patientId: string; doctorId?: string; }
@@ -15,7 +16,7 @@ export default function SleepApneaSTOPBang({ patientId, doctorId }: Props) {
     const cl = getSTOPBangClassification(score);
     setResult({ score, ...cl });
     try {
-      await fetch('http://localhost:8000/api/results', {
+      await fetch(`${API_BASE_URL}/api/results', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ patient_id: patientId || 'anon_stopbang', doctor_id: doctorId || null, calc_type: 'stop_bang', score, raw_answers: answers, hub_version: '1.3.0' })

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { API_BASE_URL } from '../../config';
 
 const LUND_SINUSES = [
   { id: 'maxilar', label: 'Seio Maxilar', isOsteo: false },
@@ -31,7 +32,7 @@ export default function LundMckayCalc({ patientId, doctorId }: Props) {
     const scoreTotal = scoreL + scoreR;
 
     try {
-      await fetch('http://localhost:8000/api/results', {
+      await fetch(`${API_BASE_URL}/api/results', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

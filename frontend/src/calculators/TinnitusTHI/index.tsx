@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { API_BASE_URL } from '../../config';
 import { THI_QUESTIONS, THI_OPTIONS, getTHIClassification, REFERENCE_THI } from './logic';
 
 interface Props { patientId: string; doctorId?: string; }
@@ -23,7 +24,7 @@ export default function TinnitusTHI({ patientId, doctorId }: Props) {
     const cl = getTHIClassification(score);
     setResult({ score, ...cl });
     try {
-      await fetch('http://localhost:8000/api/results', {
+      await fetch(`${API_BASE_URL}/api/results', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ patient_id: patientId || 'anon_thi', doctor_id: doctorId || null, calc_type: 'thi_25', score, raw_answers: answers, hub_version: '1.3.0' })

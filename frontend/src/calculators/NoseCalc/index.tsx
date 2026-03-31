@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { API_BASE_URL } from '../../config';
 
 const NOSE_QUESTIONS = [
   { id: 'q1', text: 'Congestão nasal' },
@@ -41,7 +42,7 @@ export default function NoseCalc({ patientId, doctorId }: Props) {
     };
 
     try {
-      await fetch('http://localhost:8000/api/results', {
+      await fetch(`${API_BASE_URL}/api/results', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

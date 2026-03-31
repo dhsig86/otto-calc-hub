@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { API_BASE_URL } from '../../config';
 
 const MEDICATIONS = [
   { id: 'paracetamol', group: 'Analgesia/Antitérmico', name: 'Paracetamol (200mg/ml)', minMg: 10, maxMg: 15, maxDayMg: 75, mgPerVol: 200, volMl: 1, freq: 4, type: 'mg_ml' },
@@ -62,7 +63,7 @@ export default function PediatricDosesCalc({ patientId, doctorId }: Props) {
 
     setResult(output);
     try {
-      fetch('http://localhost:8000/api/results', {
+      fetch(`${API_BASE_URL}/api/results', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

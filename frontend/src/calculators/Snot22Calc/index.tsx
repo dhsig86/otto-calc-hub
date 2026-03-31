@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { API_BASE_URL } from '../../config';
 import {
   SNOT22_QUESTIONS,
   Snot22Answers,
@@ -42,7 +43,7 @@ export default function Snot22Calc({ patientId, doctorId }: Props) {
     const topSymptomsArray = Array.from(topSymptoms).map(id => SNOT22_QUESTIONS.find(q => q.id === id)?.text || id);
 
     try {
-      await fetch('http://localhost:8000/api/results', {
+      await fetch(`${API_BASE_URL}/api/results', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

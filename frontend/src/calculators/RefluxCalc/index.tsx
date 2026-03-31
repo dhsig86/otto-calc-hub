@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { API_BASE_URL } from '../../config';
 
 const REFLUX_QUESTIONS = [
   { id: 'rouquidao', text: '1. Rouquidão ou problema com a voz' },
@@ -34,7 +35,7 @@ export default function RefluxCalc({ patientId, doctorId }: Props) {
     const classInfo = getClassification(score);
 
     try {
-      await fetch('http://localhost:8000/api/results', {
+      await fetch(`${API_BASE_URL}/api/results', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

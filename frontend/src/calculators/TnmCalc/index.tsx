@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { API_BASE_URL } from '../../config';
 import { getLarynxTOptions, getLarynxNOptions, getLarynxMOptions, calculateLarynxStage, getLarynxPrognosis } from './larynxLogic';
 import { getOralCavityTOptions, getOralCavityNOptions, getOralCavityMOptions, calculateOralCavityStage, getOralCavityPrognosis } from './oralCavityLogic';
 import { getPharynxTOptions, getPharynxNOptions, getPharynxMOptions, calculatePharynxStage, getPharynxPrognosis } from './pharynxLogic';
@@ -86,7 +87,7 @@ export default function TnmCalc({ patientId }: Props) {
     };
 
     try {
-      const response = await fetch('http://localhost:8000/api/results', {
+      const response = await fetch(`${API_BASE_URL}/api/results', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

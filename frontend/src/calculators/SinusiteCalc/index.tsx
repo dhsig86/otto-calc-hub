@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { API_BASE_URL } from '../../config';
 import {
   EPOS_SYMPTOMS,
   AAO_SYMPTOMS,
@@ -32,7 +33,7 @@ export default function SinusiteCalc({ patientId, doctorId }: Props) {
     const chance = guideline === 'EPOS' ? calculateEposChance(symptomsArray) : calculateAaoChance(symptomsArray);
 
     try {
-      await fetch('http://localhost:8000/api/results', {
+      await fetch(`${API_BASE_URL}/api/results', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

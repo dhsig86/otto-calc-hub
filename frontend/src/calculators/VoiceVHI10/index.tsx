@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { API_BASE_URL } from '../../config';
 import { VHI10_QUESTIONS, VHI10_OPTIONS, getVHI10Classification, REFERENCE_VHI10 } from './logic';
 
 interface Props { patientId: string; doctorId?: string; }
@@ -15,7 +16,7 @@ export default function VoiceVHI10({ patientId, doctorId }: Props) {
     const cl = getVHI10Classification(score);
     setResult({ score, ...cl });
     try {
-      await fetch('http://localhost:8000/api/results', {
+      await fetch(`${API_BASE_URL}/api/results', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ patient_id: patientId || 'anon_vhi10', doctor_id: doctorId || null, calc_type: 'vhi10', score, raw_answers: answers, hub_version: '1.3.0' })

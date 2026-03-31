@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: otto-calc-hub-api
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        value: sqlite:////data/otto_calc.db
+      - key: FRONTEND_URL
+        value: https://otto-calc-hub.vercel.app
+    disk:
+      name: otto-calc-db
+      mountPath: /data
+      sizeGB: 1
