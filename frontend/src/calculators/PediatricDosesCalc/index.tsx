@@ -18,9 +18,9 @@ const MEDICATIONS = [
   { id: 'hidrox', group: 'Anti-Histamínico', name: 'Hidroxizina (2mg/ml)', minMg: 0.35, maxMg: 0.7, maxDayMg: 2.0, mgPerVol: 2, volMl: 1, freq: 3, type: 'mg_ml' },
 ] as const;
 
-interface Props { patientId: string; }
+interface Props { patientId: string; doctorId?: string; }
 
-export default function PediatricDosesCalc({ patientId }: Props) {
+export default function PediatricDosesCalc({ patientId, doctorId }: Props) {
   const [weight, setWeight] = useState('');
   const [medId, setMedId] = useState('');
   const [freq, setFreq] = useState(3);
@@ -65,7 +65,14 @@ export default function PediatricDosesCalc({ patientId }: Props) {
       fetch('http://localhost:8000/api/results', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ patient_id: patientId || 'anon_pediatric', calc_type: 'dose_pediatrica', score: parseFloat(weight), raw_answers: { weight, drug: med.name, freq, prescription: output } })
+        body: JSON.stringify({
+          patient_id: patientId || 'anon_pediatric',
+          doctor_id: doctorId || null,
+          calc_type: 'dose_pediatrica',
+          score: parseFloat(weight),
+          raw_answers: { weight, drug: med?.name, freq, prescription: output },
+          hub_version: '1.3.0'
+        })
       });
     } catch {}
   };

@@ -7,9 +7,9 @@ import {
   getSnot22Color
 } from './logic';
 
-interface Props { patientId: string; }
+interface Props { patientId: string; doctorId?: string; }
 
-export default function Snot22Calc({ patientId }: Props) {
+export default function Snot22Calc({ patientId, doctorId }: Props) {
   const [answers, setAnswers] = useState<Snot22Answers>({});
   const [topSymptoms, setTopSymptoms] = useState<Set<string>>(new Set());
   const [currentGroup, setCurrentGroup] = useState<number>(1);
@@ -45,7 +45,14 @@ export default function Snot22Calc({ patientId }: Props) {
       await fetch('http://localhost:8000/api/results', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ patient_id: patientId || 'anon_snot22', calc_type: 'snot22', score, raw_answers: { answers, top_symptoms: topSymptomsArray } })
+        body: JSON.stringify({
+          patient_id: patientId || 'anon_snot22',
+          doctor_id: doctorId || null,
+          calc_type: 'snot22',
+          score,
+          raw_answers: { answers, top_symptoms: topSymptomsArray },
+          hub_version: '1.3.0'
+        })
       });
     } catch (e) { console.warn('Backend offline.', e); }
     finally {

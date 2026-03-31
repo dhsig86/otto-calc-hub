@@ -77,13 +77,13 @@ export default function App() {
 
         {/* Content Area */}
         <div className="w-full">
-          {activeTab === 'nose' && <NoseCalc patientId={patientName} />}
-          {activeTab === 'lund' && <LundMckayCalc patientId={patientName} />}
-          {activeTab === 'snot22' && <Snot22Calc patientId={patientName} />}
-          {activeTab === 'sinusite' && <SinusiteCalc patientId={patientName} />}
-          {activeTab === 'tnm' && <TnmCalc patientId={patientName} />}
-          {activeTab === 'refluxo' && <RefluxCalc patientId={patientName} />}
-          {activeTab === 'pediatria' && <PediatricDosesCalc patientId={patientName} />}
+          {activeTab === 'nose' && <NoseCalc patientId={patientName} doctorId={doctorId} />}
+          {activeTab === 'lund' && <LundMckayCalc patientId={patientName} doctorId={doctorId} />}
+          {activeTab === 'snot22' && <Snot22Calc patientId={patientName} doctorId={doctorId} />}
+          {activeTab === 'sinusite' && <SinusiteCalc patientId={patientName} doctorId={doctorId} />}
+          {activeTab === 'tnm' && <TnmCalc patientId={patientName} doctorId={doctorId} />}
+          {activeTab === 'refluxo' && <RefluxCalc patientId={patientName} doctorId={doctorId} />}
+          {activeTab === 'pediatria' && <PediatricDosesCalc patientId={patientName} doctorId={doctorId} />}
         </div>
       </main>
 

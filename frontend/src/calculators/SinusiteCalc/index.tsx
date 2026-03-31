@@ -8,9 +8,9 @@ import {
 } from './logic';
 
 type Guideline = 'EPOS' | 'AAO-HNSF' | null;
-interface Props { patientId: string; }
+interface Props { patientId: string; doctorId?: string; }
 
-export default function SinusiteCalc({ patientId }: Props) {
+export default function SinusiteCalc({ patientId, doctorId }: Props) {
   const [guideline, setGuideline] = useState<Guideline>(null);
   const [selectedSymptoms, setSelectedSymptoms] = useState<Set<string>>(new Set());
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,7 +35,14 @@ export default function SinusiteCalc({ patientId }: Props) {
       await fetch('http://localhost:8000/api/results', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ patient_id: patientId || 'anon_sinusite', calc_type: `sinusite_${guideline.toLowerCase()}`, score: chance, raw_answers: { guideline_used: guideline, symptoms: symptomsArray } })
+        body: JSON.stringify({
+          patient_id: patientId || 'anon_sinusite',
+          doctor_id: doctorId || null,
+          calc_type: `sinusite_${guideline?.toLowerCase()}`,
+          score: chance,
+          raw_answers: { guideline_used: guideline, symptoms: symptomsArray },
+          hub_version: '1.3.0'
+        })
       });
     } catch (e) { console.warn('API offline.', e); }
     finally {

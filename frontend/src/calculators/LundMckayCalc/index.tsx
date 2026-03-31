@@ -9,9 +9,9 @@ const LUND_SINUSES = [
   { id: 'ostiomeatal', label: 'Complexo Ostiomeatal', isOsteo: true }
 ];
 
-interface Props { patientId: string; }
+interface Props { patientId: string; doctorId?: string; }
 
-export default function LundMckayCalc({ patientId }: Props) {
+export default function LundMckayCalc({ patientId, doctorId }: Props) {
   const [rightSide, setRightSide] = useState<Record<string, number>>({});
   const [leftSide, setLeftSide] = useState<Record<string, number>>({});
   const [submittedResult, setSubmittedResult] = useState<{scoreLeft: number, scoreRight: number, total: number} | null>(null);
@@ -34,7 +34,14 @@ export default function LundMckayCalc({ patientId }: Props) {
       await fetch('http://localhost:8000/api/results', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ patient_id: patientId || 'anon_lund', calc_type: 'lund_mackay', score: scoreTotal, raw_answers: { left: leftSide, right: rightSide } })
+        body: JSON.stringify({
+          patient_id: patientId || 'anon_lund',
+          doctor_id: doctorId || null,
+          calc_type: 'lund_mackay',
+          score: scoreTotal,
+          raw_answers: { left: leftSide, right: rightSide },
+          hub_version: '1.3.0'
+        })
       });
     } catch (e) { console.warn('FastAPI offline.', e); }
     finally { setSubmittedResult({ scoreLeft: scoreL, scoreRight: scoreR, total: scoreTotal }); }

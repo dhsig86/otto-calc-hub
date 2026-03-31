@@ -8,9 +8,9 @@ const NOSE_QUESTIONS = [
   { id: 'q5', text: 'Dificuldade para realizar exercícios físicos devido à respiração nasal' }
 ];
 
-interface Props { patientId: string; }
+interface Props { patientId: string; doctorId?: string; }
 
-export default function NoseCalc({ patientId }: Props) {
+export default function NoseCalc({ patientId, doctorId }: Props) {
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [submittedResult, setSubmittedResult] = useState<{score: number, classification: string} | null>(null);
   const [copied, setCopied] = useState(false);
@@ -33,9 +33,11 @@ export default function NoseCalc({ patientId }: Props) {
 
     const payload = {
       patient_id: patientId || 'anon_nose',
+      doctor_id: doctorId || null,
       calc_type: 'nose_score',
       score,
-      raw_answers: answers
+      raw_answers: { answers, classification: classInfo.label },
+      hub_version: '1.3.0'
     };
 
     try {

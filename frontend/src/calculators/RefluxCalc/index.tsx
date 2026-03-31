@@ -12,9 +12,9 @@ const REFLUX_QUESTIONS = [
   { id: 'azia', text: '9. Azia, dor no peito, indigestão ou ácido subindo' }
 ];
 
-interface Props { patientId: string; }
+interface Props { patientId: string; doctorId?: string; }
 
-export default function RefluxCalc({ patientId }: Props) {
+export default function RefluxCalc({ patientId, doctorId }: Props) {
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [submittedResult, setSubmittedResult] = useState<{score: number, classification: string, color: string} | null>(null);
   const [copied, setCopied] = useState(false);
@@ -37,7 +37,14 @@ export default function RefluxCalc({ patientId }: Props) {
       await fetch('http://localhost:8000/api/results', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ patient_id: patientId || 'anon_rsi', calc_type: 'refluxo_rsi', score, raw_answers: answers })
+        body: JSON.stringify({
+          patient_id: patientId || 'anon_rsi',
+          doctor_id: doctorId || null,
+          calc_type: 'refluxo_rsi',
+          score,
+          raw_answers: answers,
+          hub_version: '1.3.0'
+        })
       });
     } catch (e) { console.warn('FastAPI offline.', e); }
     finally {
