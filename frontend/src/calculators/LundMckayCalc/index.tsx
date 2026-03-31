@@ -1,23 +1,24 @@
 import { useState } from 'react';
 
 const LUND_SINUSES = [
-  { id: 'maxilar', label: 'Seio Maxilar', max: 2 },
-  { id: 'etmoideAnt', label: 'Seio Etmoidal Anterior', max: 2 },
-  { id: 'etmoidePos', label: 'Seio Etmoidal Posterior', max: 2 },
-  { id: 'esfenoide', label: 'Seio Esfenoidal', max: 2 },
-  { id: 'frontal', label: 'Seio Frontal', max: 2 },
-  { id: 'ostiomeatal', label: 'Complexo Ostiomeatal', max: 2, isOsteo: true }
+  { id: 'maxilar', label: 'Seio Maxilar', isOsteo: false },
+  { id: 'etmoideAnt', label: 'Seio Etmoidal Anterior', isOsteo: false },
+  { id: 'etmoidePos', label: 'Seio Etmoidal Posterior', isOsteo: false },
+  { id: 'esfenoide', label: 'Seio Esfenoidal', isOsteo: false },
+  { id: 'frontal', label: 'Seio Frontal', isOsteo: false },
+  { id: 'ostiomeatal', label: 'Complexo Ostiomeatal', isOsteo: true }
 ];
 
-export default function LundMckayCalc() {
+interface Props { patientId: string; }
+
+export default function LundMckayCalc({ patientId }: Props) {
   const [rightSide, setRightSide] = useState<Record<string, number>>({});
   const [leftSide, setLeftSide] = useState<Record<string, number>>({});
-  const [patientId, setPatientId] = useState<string>('');
   const [submittedResult, setSubmittedResult] = useState<{scoreLeft: number, scoreRight: number, total: number} | null>(null);
+  const [copied, setCopied] = useState(false);
 
-  const calculatePartial = (sideAnswers: Record<string, number>) => {
-    return Object.values(sideAnswers).reduce((acc, val) => acc + val, 0);
-  };
+  const calculatePartial = (sideAnswers: Record<string, number>) =>
+    Object.values(sideAnswers).reduce((acc, val) => acc + val, 0);
 
   const handleScoreChange = (side: 'L' | 'R', sinusId: string, value: number) => {
     if (side === 'L') setLeftSide(p => ({ ...p, [sinusId]: value }));
@@ -29,111 +30,110 @@ export default function LundMckayCalc() {
     const scoreR = calculatePartial(rightSide);
     const scoreTotal = scoreL + scoreR;
 
-    const payload = {
-      patient_id: patientId || "anon_lund",
-      calc_type: "lund_mackay",
-      score: scoreTotal,
-      raw_answers: { left: leftSide, right: rightSide }
-    };
-
     try {
-      const response = await fetch('http://localhost:8000/api/results', {
+      await fetch('http://localhost:8000/api/results', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({ patient_id: patientId || 'anon_lund', calc_type: 'lund_mackay', score: scoreTotal, raw_answers: { left: leftSide, right: rightSide } })
       });
-      if (!response.ok) console.warn('FastAPI Offline.');
-    } catch (e) {
-      console.warn('FastAPI error.', e);
-    } finally {
-      setSubmittedResult({ scoreLeft: scoreL, scoreRight: scoreR, total: scoreTotal });
-    }
+    } catch (e) { console.warn('FastAPI offline.', e); }
+    finally { setSubmittedResult({ scoreLeft: scoreL, scoreRight: scoreR, total: scoreTotal }); }
+  };
+
+  const getInterpretation = (total: number) => {
+    if (total <= 4) return { label: 'Doença Mínima / Normal', color: '#16a34a' };
+    if (total <= 8) return { label: 'Doença Leve', color: '#ca8a04' };
+    if (total <= 16) return { label: 'Doença Moderada', color: '#ea580c' };
+    return { label: 'Doença Grave (Extensa)', color: '#dc2626' };
+  };
+
+  const handleCopy = () => {
+    if (!submittedResult) return;
+    const interp = getInterpretation(submittedResult.total);
+    const text = `OTTO CALC-HUB — Lund-Mackay (TC de Seios)\nPaciente: ${patientId || 'Não informado'}\nScore Total: ${submittedResult.total}/24\nLado Direito: ${submittedResult.scoreRight}/12\nLado Esquerdo: ${submittedResult.scoreLeft}/12\nInterpretação: ${interp.label}\nData: ${new Date().toLocaleDateString('pt-BR')}`;
+    navigator.clipboard.writeText(text).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2500); });
   };
 
   if (submittedResult) {
+    const interp = getInterpretation(submittedResult.total);
     return (
-      <div className="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-lg mt-8 text-center border-t-8 border-[#00A0AF]">
-        <h2 className="text-3xl font-extrabold mb-4 text-[#00A0AF]">
+      <div className="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-lg mt-4 text-center border-t-8" style={{borderColor: interp.color}}>
+        <h2 className="text-3xl font-extrabold mb-2" style={{color: interp.color}}>
           Lund-Mackay Total: {submittedResult.total} / 24
         </h2>
-        <div className="flex justify-center gap-8 mb-6 text-slate-700 font-bold">
-          <p>Lado Direito: {submittedResult.scoreRight} / 12</p>
-          <p>Lado Esquerdo: {submittedResult.scoreLeft} / 12</p>
+        {patientId && <p className="text-slate-500 text-sm mb-2">Paciente: <strong>{patientId}</strong></p>}
+        <p className="text-lg font-bold mb-4 text-slate-700">{interp.label}</p>
+        <div className="flex justify-center gap-8 mb-6 text-slate-600 font-semibold text-sm">
+          <p>🔵 Lado Direito: <strong>{submittedResult.scoreRight}</strong> / 12</p>
+          <p>🟢 Lado Esquerdo: <strong>{submittedResult.scoreLeft}</strong> / 12</p>
         </div>
-        <button 
-          onClick={() => { setLeftSide({}); setRightSide({}); setSubmittedResult(null); setPatientId(''); }} 
-          className="bg-[#00A0AF] hover:bg-[#00BCD4] text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">
-          Avaliar Nova Tomografia
-        </button>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <button onClick={handleCopy} className={`py-3 px-6 rounded-lg font-bold border-2 transition-all ${copied ? 'bg-green-500 text-white border-green-500' : 'bg-white text-slate-600 border-slate-300 hover:border-[#00A0AF]'}`}>
+            {copied ? '✅ Copiado!' : '📋 Copiar Resultado'}
+          </button>
+          <button onClick={() => { setLeftSide({}); setRightSide({}); setSubmittedResult(null); }} className="bg-[#00A0AF] hover:bg-[#00BCD4] text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">
+            Nova Tomografia
+          </button>
+        </div>
       </div>
     );
   }
+
+  const SidePanel = ({ side, state, label, color }: { side: 'L' | 'R'; state: Record<string, number>; label: string; color: string }) => (
+    <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
+      <h3 className="text-lg font-bold text-center mb-5 py-2 rounded" style={{backgroundColor: `${color}20`, color}}>{label}</h3>
+      {LUND_SINUSES.map((sinus) => {
+        const val = state[sinus.id] || 0;
+        const btnColor = side === 'R' ? 'blue' : 'green';
+        const activeClass = `bg-${btnColor}-600 text-white border-${btnColor}-600 shadow`;
+        const inactiveClass = `bg-white text-${btnColor}-700 border-${btnColor === 'blue' ? 'blue' : 'green'}-200 hover:border-${btnColor}-400`;
+        return (
+          <div key={sinus.id} className="mb-4">
+            <label className="block text-sm font-bold text-slate-700 mb-2">{sinus.label}</label>
+            <div className="flex gap-2">
+              {[0, ...(!sinus.isOsteo ? [1] : []), 2].map(num => (
+                <button key={num} onClick={() => handleScoreChange(side, sinus.id, num)}
+                  className={`flex-1 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-bold border-2 transition-all ${val === num ? activeClass : inactiveClass}`}>
+                  {num === 0 ? '0 (Normal)' : num === 1 ? '1 (Parcial)' : '2 (Total)'}
+                </button>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+      <div className="mt-4 text-center text-sm font-bold text-slate-600">
+        Subtotal {label}: <span className="text-[#00A0AF] text-lg">{calculatePartial(state)}</span> / 12
+      </div>
+    </div>
+  );
 
   return (
     <div className="max-w-4xl mx-auto flex flex-col gap-6">
       <div className="bg-white p-6 sm:p-8 rounded-xl shadow-lg border border-slate-100">
         <div className="mb-8 border-b border-slate-200 pb-6">
-          <h2 className="text-2xl font-bold text-slate-800 mb-2">Escore Tomográfico Lund-Mackay</h2>
-          <p className="text-slate-500 text-sm mb-4">Graduação do nível de velamento tomográfico rinossinusal.</p>
-          <input 
-            type="text" 
-            value={patientId}
-            onChange={e => setPatientId(e.target.value)}
-            placeholder="Nome / Registro do Paciente"
-            className="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-[#5CC6BA] focus:outline-none"
-          />
+          <h2 className="text-2xl font-bold text-slate-800 mb-1">Escore Tomográfico Lund-Mackay</h2>
+          <p className="text-slate-500 text-sm mb-2">Graduação radiológica do velamento rinossinusal em TC de face. Score máximo: 24.</p>
+          {patientId && <p className="mt-2 text-sm font-semibold text-[#00A0AF] bg-[#e6f6f8] px-3 py-1.5 rounded-full inline-block">👤 Paciente: {patientId}</p>}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-          {/* LADO DIREITO */}
-          <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
-            <h3 className="text-xl font-bold text-center mb-6 py-2 bg-blue-100 text-blue-800 rounded">Lado Direito</h3>
-            {LUND_SINUSES.map((sinus) => {
-              const val = rightSide[sinus.id] || 0;
-              return (
-                <div key={`R_${sinus.id}`} className="mb-5">
-                  <label className="block text-sm font-bold text-slate-700 mb-2">{sinus.label}</label>
-                  <div className="flex gap-2">
-                    <button onClick={() => handleScoreChange('R', sinus.id, 0)} className={`flex-1 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-bold border-2 transition-all ${val === 0 ? 'bg-blue-600 text-white border-blue-600 shadow' : 'bg-white text-slate-600 border-slate-200 hover:border-blue-400'}`}>0 (Normal)</button>
-                    {!sinus.isOsteo && <button onClick={() => handleScoreChange('R', sinus.id, 1)} className={`flex-1 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-bold border-2 transition-all ${val === 1 ? 'bg-blue-600 text-white border-blue-600 shadow' : 'bg-white text-slate-600 border-slate-200 hover:border-blue-400'}`}>1 (Parcial)</button>}
-                    <button onClick={() => handleScoreChange('R', sinus.id, 2)} className={`flex-1 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-bold border-2 transition-all ${val === 2 ? 'bg-blue-600 text-white border-blue-600 shadow' : 'bg-white text-slate-600 border-slate-200 hover:border-blue-400'}`}>2 (Total)</button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* LADO ESQUERDO */}
-          <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
-            <h3 className="text-xl font-bold text-center mb-6 py-2 bg-green-100 text-green-800 rounded">Lado Esquerdo</h3>
-            {LUND_SINUSES.map((sinus) => {
-              const val = leftSide[sinus.id] || 0;
-              return (
-                <div key={`L_${sinus.id}`} className="mb-5">
-                  <label className="block text-sm font-bold text-slate-700 mb-2">{sinus.label}</label>
-                  <div className="flex gap-2">
-                    <button onClick={() => handleScoreChange('L', sinus.id, 0)} className={`flex-1 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-bold border-2 transition-all ${val === 0 ? 'bg-green-600 text-white border-green-600 shadow' : 'bg-white text-slate-600 border-slate-200 hover:border-green-400'}`}>0 (Normal)</button>
-                    {!sinus.isOsteo && <button onClick={() => handleScoreChange('L', sinus.id, 1)} className={`flex-1 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-bold border-2 transition-all ${val === 1 ? 'bg-green-600 text-white border-green-600 shadow' : 'bg-white text-slate-600 border-slate-200 hover:border-green-400'}`}>1 (Parcial)</button>}
-                    <button onClick={() => handleScoreChange('L', sinus.id, 2)} className={`flex-1 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-bold border-2 transition-all ${val === 2 ? 'bg-green-600 text-white border-green-600 shadow' : 'bg-white text-slate-600 border-slate-200 hover:border-green-400'}`}>2 (Total)</button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <SidePanel side="R" state={rightSide} label="Lado Direito" color="#2563eb" />
+          <SidePanel side="L" state={leftSide} label="Lado Esquerdo" color="#16a34a" />
         </div>
 
-        <div className="flex justify-center border-t border-slate-200 pt-6">
-          <button
-            onClick={handleSubmit}
-            className="px-8 py-3 bg-[#00A0AF] hover:bg-[#00BCD4] text-white font-bold rounded-lg shadow transition-all"
-          >
+        <div className="flex flex-col sm:flex-row justify-center gap-4 border-t border-slate-200 pt-6">
+          <div className="text-center text-sm font-bold text-slate-600">
+            Score Total: <span className="text-[#00A0AF] text-2xl font-extrabold">
+              {calculatePartial(rightSide) + calculatePartial(leftSide)}
+            </span> / 24
+          </div>
+          <button onClick={handleSubmit} className="px-8 py-3 bg-[#00A0AF] hover:bg-[#00BCD4] text-white font-bold rounded-lg shadow transition-all">
             Calcular Lund-Mackay
           </button>
         </div>
       </div>
 
-      {/* REFERÊNCIA ACADÊMICA */}
-      <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 shadow-sm text-xs text-slate-500 text-center">
+      <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 text-xs text-slate-500 text-center">
         <p className="font-bold mb-1">Referência Científica Padrão-Ouro:</p>
         <p className="italic">Lund VJ, Mackay IS. Staging in rhinosinusitis. Rhinology. 1993;31(4):183-184. PMID: 8140385.</p>
       </div>

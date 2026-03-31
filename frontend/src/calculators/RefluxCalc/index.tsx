@@ -12,15 +12,17 @@ const REFLUX_QUESTIONS = [
   { id: 'azia', text: '9. Azia, dor no peito, indigestão ou ácido subindo' }
 ];
 
-export default function RefluxCalc() {
+interface Props { patientId: string; }
+
+export default function RefluxCalc({ patientId }: Props) {
   const [answers, setAnswers] = useState<Record<string, number>>({});
-  const [patientId, setPatientId] = useState<string>('');
-  const [submittedResult, setSubmittedResult] = useState<{score: number, classification: string} | null>(null);
+  const [submittedResult, setSubmittedResult] = useState<{score: number, classification: string, color: string} | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const getClassification = (score: number) => {
-    if (score <= 13) return { label: 'Normal / Sem RLF Significativo', color: '#16a34a' }; // Verde
-    if (score <= 21) return { label: 'RLF Leve a Moderado', color: '#ca8a04' }; // Amarelo
-    return { label: 'RLF Moderado a Grave', color: '#ea580c' }; // Laranja/Vermelho
+    if (score <= 13) return { label: 'Normal / Sem RLF Significativo', color: '#16a34a' };
+    if (score <= 21) return { label: 'RLF Leve a Moderado', color: '#ca8a04' };
+    return { label: 'RLF Moderado a Grave', color: '#ea580c' };
   };
 
   const handleScoreChange = (qId: string, value: number) => {
@@ -31,40 +33,41 @@ export default function RefluxCalc() {
     const score = REFLUX_QUESTIONS.reduce((acc, q) => acc + (answers[q.id] || 0), 0);
     const classInfo = getClassification(score);
 
-    const payload = {
-      patient_id: patientId || "anon_rsi",
-      calc_type: "refluxo_rsi",
-      score: score,
-      raw_answers: answers
-    };
-
     try {
-      const response = await fetch('http://localhost:8000/api/results', {
+      await fetch('http://localhost:8000/api/results', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({ patient_id: patientId || 'anon_rsi', calc_type: 'refluxo_rsi', score, raw_answers: answers })
       });
-      if (!response.ok) console.warn('FastAPI Offline.');
-    } catch (e) {
-      console.warn('FastAPI error.', e);
-    } finally {
-      setSubmittedResult({ score, classification: classInfo.label });
+    } catch (e) { console.warn('FastAPI offline.', e); }
+    finally {
+      setSubmittedResult({ score, classification: classInfo.label, color: classInfo.color });
     }
   };
 
+  const handleCopy = () => {
+    if (!submittedResult) return;
+    const text = `OTTO CALC-HUB — RSI (Refluxo Laringofaríngeo)\nPaciente: ${patientId || 'Não informado'}\nEscore RSI: ${submittedResult.score}/45\nCategoria: ${submittedResult.classification}\nLimiar diagnóstico: > 13 pontos sugere RLF\nData: ${new Date().toLocaleDateString('pt-BR')}`;
+    navigator.clipboard.writeText(text).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2500); });
+  };
+
   if (submittedResult) {
-    const classInfo = getClassification(submittedResult.score);
     return (
-      <div className="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-lg mt-8 text-center border-t-8" style={{borderColor: classInfo.color}}>
-        <h2 className="text-3xl font-extrabold mb-2" style={{color: classInfo.color}}>
+      <div className="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-lg mt-4 text-center border-t-8" style={{borderColor: submittedResult.color}}>
+        <h2 className="text-3xl font-extrabold mb-2" style={{color: submittedResult.color}}>
           Escore RSI: {submittedResult.score} / 45
         </h2>
-        <p className="text-xl font-bold mb-6 text-slate-700">Categoria: {submittedResult.classification}</p>
-        <button 
-          onClick={() => { setAnswers({}); setSubmittedResult(null); setPatientId(''); }} 
-          className="bg-[#00A0AF] hover:bg-[#00BCD4] text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">
-          Realizar Novo Teste
-        </button>
+        {patientId && <p className="text-slate-500 text-sm mb-2">Paciente: <strong>{patientId}</strong></p>}
+        <p className="text-xl font-bold mb-6 text-slate-700">{submittedResult.classification}</p>
+        <p className="text-xs text-slate-400 mb-6 italic">Limiar diagnóstico de RLF: &gt; 13 pontos (Belafsky et al., 2002)</p>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <button onClick={handleCopy} className={`py-3 px-6 rounded-lg font-bold border-2 transition-all ${copied ? 'bg-green-500 text-white border-green-500' : 'bg-white text-slate-600 border-slate-300 hover:border-[#00A0AF]'}`}>
+            {copied ? '✅ Copiado!' : '📋 Copiar Resultado'}
+          </button>
+          <button onClick={() => { setAnswers({}); setSubmittedResult(null); }} className="bg-[#00A0AF] hover:bg-[#00BCD4] text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">
+            Novo Teste
+          </button>
+        </div>
       </div>
     );
   }
@@ -73,46 +76,31 @@ export default function RefluxCalc() {
     <div className="max-w-3xl mx-auto flex flex-col gap-6">
       <div className="bg-white p-6 sm:p-8 rounded-xl shadow-lg border border-slate-100">
         <div className="mb-8 border-b border-slate-200 pb-6">
-          <h2 className="text-2xl font-bold text-slate-800 mb-2">Índice de Sintomas de Refluxo (RSI)</h2>
-          <p className="text-slate-500 text-sm mb-4">Mede a gravidade do Refluxo Laringofaríngeo (RLF). Escores &gt; 13 são sugestivos de RLF.</p>
-          <input 
-            type="text" 
-            value={patientId}
-            onChange={e => setPatientId(e.target.value)}
-            placeholder="Nome / Registro do Paciente"
-            className="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-[#5CC6BA] focus:outline-none"
-          />
+          <h2 className="text-2xl font-bold text-slate-800 mb-1">Índice de Sintomas de Refluxo (RSI)</h2>
+          <p className="text-slate-500 text-sm mb-2">Reflux Symptom Index — Escores &gt; 13 são sugestivos de Refluxo Laringofaríngeo (RLF).</p>
+          {patientId && <p className="mt-2 text-sm font-semibold text-[#00A0AF] bg-[#e6f6f8] px-3 py-1.5 rounded-full inline-block">👤 Paciente: {patientId}</p>}
         </div>
 
         <div className="space-y-6 mb-8">
-          <p className="text-sm font-bold text-slate-700 mb-4 bg-slate-50 p-3 rounded">
-            Nos últimos 30 dias, qual o nível de impacto dos problemas abaixo?
+          <p className="text-sm font-bold text-slate-700 bg-slate-50 p-3 rounded">
+            Nos últimos 30 dias, qual o nível de impacto dos problemas abaixo? (0 = Nenhum, 5 = Grave)
           </p>
           {REFLUX_QUESTIONS.map((q) => {
             const val = answers[q.id] || 0;
             return (
-              <div key={q.id} className="bg-white p-4 rounded border-b border-slate-100 hover:bg-slate-50 transition-colors">
+              <div key={q.id} className="bg-white p-4 rounded-lg border border-slate-100 hover:bg-slate-50 transition-colors">
                 <h3 className="font-semibold text-slate-700 mb-3 text-sm">{q.text}</h3>
-                <div className="mt-3">
-                  <div className="flex justify-between gap-1 sm:gap-2">
-                    {[0, 1, 2, 3, 4, 5].map((num) => (
-                      <button
-                        key={num}
-                        onClick={() => handleScoreChange(q.id, num)}
-                        className={`flex-1 py-3 sm:py-4 rounded-lg font-bold text-sm sm:text-base border-2 transition-all cursor-pointer ${
-                          val === num 
-                            ? 'bg-[#00A0AF] text-white border-[#00A0AF] shadow-md transform scale-105' 
-                            : 'bg-white text-slate-600 border-slate-200 hover:border-[#5CC6BA] hover:bg-slate-50'
-                        }`}
-                      >
-                        {num}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="flex justify-between text-[10px] sm:text-xs text-slate-400 font-semibold mt-2 px-1 uppercase tracking-wide">
-                    <span>0: Nenhum</span>
-                    <span>5: Grave</span>
-                  </div>
+                <div className="flex justify-between gap-1 sm:gap-2">
+                  {[0, 1, 2, 3, 4, 5].map((num) => (
+                    <button
+                      key={num}
+                      onClick={() => handleScoreChange(q.id, num)}
+                      className={`flex-1 py-3 sm:py-4 rounded-lg font-bold text-sm sm:text-base border-2 transition-all ${val === num ? 'bg-[#00A0AF] text-white border-[#00A0AF] shadow-md scale-105' : 'bg-white text-slate-600 border-slate-200 hover:border-[#5CC6BA]'}`}
+                    >{num}</button>
+                  ))}
+                </div>
+                <div className="flex justify-between text-[10px] text-slate-400 font-semibold mt-2 px-1 uppercase tracking-wide">
+                  <span>0: Nenhum</span><span>5: Grave</span>
                 </div>
               </div>
             );
@@ -120,19 +108,15 @@ export default function RefluxCalc() {
         </div>
 
         <div className="flex justify-center border-t border-slate-200 pt-6">
-          <button
-            onClick={handleSubmit}
-            className="px-8 py-3 bg-[#00A0AF] hover:bg-[#00BCD4] text-white font-bold rounded-lg shadow transition-all"
-          >
+          <button onClick={handleSubmit} className="px-8 py-3 bg-[#00A0AF] hover:bg-[#00BCD4] text-white font-bold rounded-lg shadow transition-all w-full sm:w-auto">
             Calcular RSI
           </button>
         </div>
       </div>
 
-      {/* REFERÊNCIA ACADÊMICA */}
-      <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 shadow-sm text-xs text-slate-500 text-center">
+      <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 text-xs text-slate-500 text-center">
         <p className="font-bold mb-1">Referência Científica Padrão-Ouro:</p>
-        <p className="italic">Belafsky PC, Postma GN, Koufman JA. Validity and reliability of the reflux symptom index (RSI). J Voice. 2002;16(2):274-277. doi: 10.1016/s0892-1997(02)00097-8.</p>
+        <p className="italic">Belafsky PC, Postma GN, Koufman JA. Validity and reliability of the reflux symptom index (RSI). J Voice. 2002;16(2):274-277. doi:10.1016/s0892-1997(02)00097-8.</p>
       </div>
     </div>
   );

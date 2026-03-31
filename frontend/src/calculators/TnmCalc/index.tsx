@@ -6,8 +6,9 @@ import { getThyroidTOptions, getThyroidNOptions, getThyroidMOptions, calculateTh
 import { getSalivaryTOptions, getSalivaryNOptions, getSalivaryMOptions, calculateSalivaryStage, getSalivaryPrognosis } from './salivaryLogic';
 
 type Organ = 'laringe' | 'cavidade_oral' | 'faringe' | 'tireoide' | 'glandulas_salivares' | null;
+interface Props { patientId: string; }
 
-export default function TnmCalc() {
+export default function TnmCalc({ patientId }: Props) {
   const [organ, setOrgan] = useState<Organ>(null);
   const [subsite, setSubsite] = useState<string>('');
   
@@ -17,13 +18,13 @@ export default function TnmCalc() {
   const [mValue, setMValue] = useState<string>('');
   
   // States Específicos
-  const [hpv, setHpv] = useState<string>('negativo'); // Faringe (Orofaringe)
-  const [ageCutoff, setAgeCutoff] = useState<string>('maior_55'); // Tireoide
-  const [histology, setHistology] = useState<string>('papilifero'); // Tireoide
+  const [hpv, setHpv] = useState<string>('negativo');
+  const [ageCutoff, setAgeCutoff] = useState<string>('maior_55');
+  const [histology, setHistology] = useState<string>('papilifero');
   
-  const [patientId, setPatientId] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [result, setResult] = useState<{stage: string, prognosis: string} | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const resetForm = () => {
     setOrgan(null);
@@ -195,26 +196,41 @@ export default function TnmCalc() {
     return [];
   };
 
+  const handleCopy = () => {
+    if (!result) return;
+    const text = `OTTO CALC-HUB — Estadiamento Oncológico TNM (AJCC 8ª Ed)
+Paciente: ${patientId || 'Não informado'}
+Topografia: ${organ?.replace('_', ' ').toUpperCase()} ${subsite ? `(${subsite.toUpperCase()})` : ''}
+Estágio: ${result.stage}
+T: ${tValue} | N: ${nValue} | M: ${mValue}
+${organ === 'faringe' && subsite === 'orofaringe' ? `p16/HPV: ${hpv.toUpperCase()}` : ''}${organ === 'tireoide' ? `Histologia: ${histology} | Idade: ${ageCutoff === 'menor_55' ? '< 55 anos' : '≥ 55 anos'}` : ''}
+Prognóstico: ${result.prognosis}
+Data: ${new Date().toLocaleDateString('pt-BR')}`;
+    navigator.clipboard.writeText(text).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2500); });
+  };
+
   if (result) {
     return (
-      <div className="max-w-3xl mx-auto p-6 bg-white rounded-xl shadow-lg mt-8 text-center border-t-8 border-[#00A0AF] animate-fade-in">
+      <div className="max-w-3xl mx-auto p-6 bg-white rounded-xl shadow-lg mt-4 text-center border-t-8 border-[#00A0AF]">
         <h2 className="text-4xl font-extrabold mb-2 text-[#00A0AF]">{result.stage}</h2>
+        {patientId && <p className="text-slate-500 text-sm mb-2">Paciente: <strong>{patientId}</strong></p>}
         <p className="text-xl font-bold mb-6 text-slate-700">T{tValue.replace('t','')} N{nValue.replace('n','')} M{mValue.replace('m','')}</p>
         
-        <div className="bg-slate-50 p-4 rounded-lg mb-8 text-left border border-slate-200">
+        <div className="bg-slate-50 p-4 rounded-lg mb-6 text-left border border-slate-200">
           <h3 className="font-bold text-slate-700 mb-2 border-b pb-2">Topografia: {organ?.replace('_',' ').toUpperCase()} {subsite ? `(${subsite.toUpperCase()})` : ''}</h3>
-          
           {organ === 'faringe' && subsite === 'orofaringe' && <p className="text-xs font-bold text-orange-600">Marcador p16: {hpv.toUpperCase()}</p>}
           {organ === 'tireoide' && <p className="text-xs font-bold text-blue-600">Histologia: {histology.toUpperCase()} | Idade: {ageCutoff === 'menor_55' ? '< 55 anos' : '≥ 55 anos'}</p>}
-          
-          <p className="text-slate-600 space-y-1 text-sm font-medium mt-3">{result.prognosis}</p>
+          <p className="text-slate-600 text-sm font-medium mt-3">{result.prognosis}</p>
         </div>
         
-        <button 
-          onClick={resetForm} 
-          className="bg-[#00A0AF] hover:bg-[#00BCD4] text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">
-          Realizar Novo Estadiamento
-        </button>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <button onClick={handleCopy} className={`py-3 px-6 rounded-lg font-bold border-2 transition-all ${copied ? 'bg-green-500 text-white border-green-500' : 'bg-white text-slate-600 border-slate-300 hover:border-[#00A0AF]'}`}>
+            {copied ? '✅ Copiado!' : '📋 Copiar Estadiamento'}
+          </button>
+          <button onClick={resetForm} className="bg-[#00A0AF] hover:bg-[#00BCD4] text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">
+            Novo Estadiamento
+          </button>
+        </div>
       </div>
     );
   }
@@ -223,15 +239,9 @@ export default function TnmCalc() {
     <div className="max-w-4xl mx-auto flex flex-col gap-6">
       <div className="bg-white p-6 sm:p-8 rounded-xl shadow-lg border border-slate-100">
         <div className="mb-8 border-b border-slate-200 pb-6 text-center sm:text-left">
-          <h2 className="text-2xl font-bold text-slate-800 mb-2">Painel de Estadiamento Oncológico TNM (AJCC 8ª Ed)</h2>
-          <p className="text-slate-500 text-sm mb-4">Escolha a região cérvico-facial para ativar as árvores lógicas oficiais de estadiamento.</p>
-          <input 
-            type="text" 
-            value={patientId}
-            onChange={e => setPatientId(e.target.value)}
-            placeholder="Nome / Registro do Paciente"
-            className="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-[#5CC6BA] focus:outline-none"
-          />
+          <h2 className="text-2xl font-bold text-slate-800 mb-1">Estadiamento Oncológico TNM (AJCC 8ª Ed)</h2>
+          <p className="text-slate-500 text-sm mb-2">Selecione a região cérvico-facial para carregar as árvores de estadiamento validadas.</p>
+          {patientId && <p className="mt-2 text-sm font-semibold text-[#00A0AF] bg-[#e6f6f8] px-3 py-1.5 rounded-full inline-block">👤 Paciente: {patientId}</p>}
         </div>
 
         {/* ÓRGÃO */}

@@ -7,47 +7,68 @@ import TnmCalc from './calculators/TnmCalc';
 import RefluxCalc from './calculators/RefluxCalc';
 import PediatricDosesCalc from './calculators/PediatricDosesCalc';
 
-export default function App() {
-  const [activeTab, setActiveTab] = useState<'nose' | 'lund' | 'snot22' | 'sinusite' | 'tnm' | 'refluxo' | 'pediatria'>('nose');
-  const [doctorId, setDoctorId] = useState('');
+type CalcTab = 'sinusite' | 'nose' | 'lund' | 'snot22' | 'tnm' | 'refluxo' | 'pediatria';
 
-  const calculators = [
-    { id: 'sinusite', name: 'Sinusite (EPOS/AAO)' },
-    { id: 'nose', name: 'Escala NOSE' },
-    { id: 'lund', name: 'Lund-Mackay (TC)' },
+export default function App() {
+  const [activeTab, setActiveTab] = useState<CalcTab>('nose');
+  const [doctorId, setDoctorId] = useState('');
+  const [patientName, setPatientName] = useState('');
+
+  const calculators: { id: CalcTab; name: string }[] = [
+    { id: 'sinusite', name: 'Sinusite' },
+    { id: 'nose', name: 'NOSE' },
+    { id: 'lund', name: 'Lund-Mackay' },
     { id: 'snot22', name: 'SNOT-22' },
-    { id: 'tnm', name: 'Estadiamento TNM' },
+    { id: 'tnm', name: 'TNM' },
     { id: 'refluxo', name: 'RSI (Refluxo)' },
-    { id: 'pediatria', name: 'Doses Infantis' }
+    { id: 'pediatria', name: 'Doses Pediátricas' }
   ];
 
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col font-sans text-slate-900">
-      <header className="bg-[#00A0AF] text-white p-6 md:px-10 shadow-md flex flex-col md:flex-row justify-between items-center z-10 relative gap-4">
-        <div className="text-center md:text-left">
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">OTTO CALC-HUB</h1>
-          <p className="text-[#5CC6BA] font-medium mt-1 text-sm md:text-base">Painel Central de Escore e Diagnóstico</p>
-        </div>
-        <div className="flex items-center bg-white/10 p-2 rounded-lg border border-white/20">
-           <span className="mr-3 text-sm font-bold opacity-90 hidden sm:inline">Médico Responsável:</span>
-           <input 
-             type="text" 
-             value={doctorId} 
-             onChange={(e) => setDoctorId(e.target.value)} 
-             placeholder="CRM, ID ou Nome" 
-             className="px-3 py-1.5 rounded text-slate-800 text-sm font-semibold outline-none focus:ring-2 focus:ring-white w-48 shadow-inner"
-           />
+      <header className="bg-[#00A0AF] text-white p-4 md:px-10 shadow-md z-10 relative">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+          <div className="text-center sm:text-left">
+            <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">OTTO CALC-HUB</h1>
+            <p className="text-[#5CC6BA] font-medium mt-0.5 text-sm">Painel Central de Escore e Diagnóstico Otorrino</p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <div className="flex items-center bg-white/10 px-3 py-2 rounded-lg border border-white/20 gap-2">
+              <span className="text-xs font-bold opacity-80 whitespace-nowrap">👤 Paciente:</span>
+              <input
+                type="text"
+                value={patientName}
+                onChange={(e) => setPatientName(e.target.value)}
+                placeholder="Nome ou ID do paciente"
+                className="px-2 py-1 rounded text-slate-800 text-sm font-semibold outline-none focus:ring-2 focus:ring-white w-44 shadow-inner"
+              />
+            </div>
+            <div className="flex items-center bg-white/10 px-3 py-2 rounded-lg border border-white/20 gap-2">
+              <span className="text-xs font-bold opacity-80 whitespace-nowrap">🩺 Médico:</span>
+              <input
+                type="text"
+                value={doctorId}
+                onChange={(e) => setDoctorId(e.target.value)}
+                placeholder="CRM ou nome"
+                className="px-2 py-1 rounded text-slate-800 text-sm font-semibold outline-none focus:ring-2 focus:ring-white w-36 shadow-inner"
+              />
+            </div>
+          </div>
         </div>
       </header>
-      
-      <main className="flex-grow p-4 sm:p-8 max-w-7xl mx-auto w-full flex flex-col items-center">
+
+      <main className="flex-grow p-2 sm:p-6 max-w-7xl mx-auto w-full flex flex-col">
         {/* Navigation Tabs */}
-        <div className="flex flex-wrap justify-center w-full gap-2 mb-8 border-b-2 border-slate-200 pb-2 relative z-0">
+        <div className="flex flex-wrap w-full gap-1 mb-6 border-b-2 border-slate-200 pb-0">
           {calculators.map((calc) => (
-            <button 
+            <button
               key={calc.id}
-              onClick={() => setActiveTab(calc.id as any)}
-              className={`px-6 py-4 rounded-t-xl font-bold transition-all text-sm md:text-base flex-1 md:flex-none max-w-xs ${activeTab === calc.id ? 'bg-white text-[#00A0AF] border-t-4 border-[#00A0AF] shadow-sm transform translate-y-[2px]' : 'bg-slate-200 text-slate-500 hover:bg-slate-300'}`}
+              onClick={() => setActiveTab(calc.id)}
+              className={`px-3 py-3 rounded-t-lg font-bold transition-all text-xs sm:text-sm flex-1 sm:flex-none ${
+                activeTab === calc.id
+                  ? 'bg-white text-[#00A0AF] border-t-4 border-x border-[#00A0AF] border-b-0 border-b-white shadow-sm -mb-[2px]'
+                  : 'bg-slate-200 text-slate-500 hover:bg-slate-300'
+              }`}
             >
               {calc.name}
             </button>
@@ -56,18 +77,18 @@ export default function App() {
 
         {/* Content Area */}
         <div className="w-full">
-          {activeTab === 'nose' && <NoseCalc />}
-          {activeTab === 'lund' && <LundMckayCalc />}
-          {activeTab === 'snot22' && <Snot22Calc />}
-          {activeTab === 'sinusite' && <SinusiteCalc />}
-          {activeTab === 'tnm' && <TnmCalc />}
-          {activeTab === 'refluxo' && <RefluxCalc />}
-          {activeTab === 'pediatria' && <PediatricDosesCalc />}
+          {activeTab === 'nose' && <NoseCalc patientId={patientName} />}
+          {activeTab === 'lund' && <LundMckayCalc patientId={patientName} />}
+          {activeTab === 'snot22' && <Snot22Calc patientId={patientName} />}
+          {activeTab === 'sinusite' && <SinusiteCalc patientId={patientName} />}
+          {activeTab === 'tnm' && <TnmCalc patientId={patientName} />}
+          {activeTab === 'refluxo' && <RefluxCalc patientId={patientName} />}
+          {activeTab === 'pediatria' && <PediatricDosesCalc patientId={patientName} />}
         </div>
       </main>
 
-      <footer className="bg-white border-t p-6 text-center text-slate-500 text-sm mt-auto shadow-inner">
-        &copy; 2026 OTTO Triagem | Interface Otorrinolaringológica
+      <footer className="bg-white border-t p-4 text-center text-slate-400 text-xs mt-auto shadow-inner">
+        © 2026 OTTO Triagem | Interface Otorrinolaringológica Clínica
       </footer>
     </div>
   );

@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seletor de Questionários ORL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Estilos para a animação de fade */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Estilos de impressão */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #print-area, #print-area * {
+                visibility: visible;
+            }
+            #print-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Container Principal -->
+    <div class="container mx-auto p-4 md:p-8 max-w-4xl">
+
+        <!-- Título Principal -->
+        <header class="text-center mb-8 no-print">
+            <h1 class="text-3xl md:text-4xl font-bold text-teal-700">Plataforma de Questionários ORL</h1>
+            <p class="text-gray-600 mt-2">Selecione, preencha e analise os principais PROMs em Otorrinolaringologia.</p>
+        </header>
+
+        <!-- Tela de Seleção de Questionários -->
+        <main id="selector-view" class="fade-in">
+            <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <input type="text" id="search-input" placeholder="Buscar por nome, sigla ou sintoma (ex: zumbido, tontura)..." class="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition">
+                    <select id="filter-select" class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition">
+                        <option value="all">Todas as Áreas</option>
+                        <option value="Otologia">Otologia</option>
+                        <option value="Rinologia">Rinologia</option>
+                        <option value="Laringologia_Fonoaudiologia">Laringologia & Fonoaudiologia</option>
+                    </select>
+                </div>
+            </div>
+            <div id="questionnaire-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Cards dos questionários serão inseridos aqui -->
+            </div>
+        </main>
+
+        <!-- Tela de Preenchimento do Questionário -->
+        <section id="questionnaire-view" class="hidden fade-in">
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                <h2 id="questionnaire-title" class="text-2xl font-bold text-teal-800 mb-2"></h2>
+                <p id="questionnaire-instructions" class="text-gray-600 mb-6 border-l-4 border-teal-200 pl-4"></p>
+                <form id="questionnaire-form">
+                    <!-- Perguntas serão inseridas aqui -->
+                </form>
+                <div id="form-error" class="text-red-500 mt-4 text-center font-medium hidden">Por favor, responda a todas as perguntas.</div>
+                <div class="flex justify-between mt-8">
+                    <button id="back-to-selector-btn" class="py-2 px-6 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition">Voltar</button>
+                    <button id="calculate-score-btn" class="py-2 px-6 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition shadow-sm">Calcular Escore</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tela de Resultados -->
+        <section id="results-view" class="hidden fade-in">
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                <!-- Área para Impressão -->
+                <div id="print-area">
+                    <h2 class="text-2xl font-bold text-teal-800 mb-1">Resultado do Questionário</h2>
+                    <h3 id="results-title" class="text-xl font-semibold text-gray-700 mb-4"></h3>
+                    <div class="space-y-6">
+                        <!-- Escore Total -->
+                        <div>
+                            <p class="text-sm text-gray-500">Escore Total</p>
+                            <p id="total-score" class="text-4xl font-bold text-teal-600"></p>
+                        </div>
+                        <!-- Interpretação -->
+                        <div>
+                            <p class="text-sm text-gray-500">Interpretação Clínica</p>
+                            <p id="score-interpretation" class="text-lg font-medium bg-teal-50 p-4 rounded-lg"></p>
+                        </div>
+                        <!-- Subescalas -->
+                        <div id="subscales-results" class="space-y-2"></div>
+                         <!-- Respostas do Paciente -->
+                        <div id="patient-answers-summary" class="pt-4 border-t mt-4">
+                            <h4 class="text-lg font-semibold text-gray-700 mb-2">Resumo das Respostas</h4>
+                            <div id="answers-list" class="space-y-2 text-sm text-gray-600"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Botões de Ação -->
+                <div class="flex flex-col sm:flex-row justify-between mt-8 gap-4 no-print">
+                    <button id="new-questionnaire-btn" class="py-2 px-6 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition w-full sm:w-auto">Novo Questionário</button>
+                    <button id="print-results-btn" class="py-2 px-6 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition shadow-sm w-full sm:w-auto">Imprimir / Salvar PDF</button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Dados JSON dos Questionários -->
+    <script id="proms-data" type="application/json">
+    {
+        "Otologia": [
+            {
+                "sigla": "THI",
+                "nome_completo_pt": "Inventário de Desvantagem do Zumbido",
+                "nome_completo_en": "Tinnitus Handicap Inventory",
+                "descricao": "Quantifica o impacto do zumbido na qualidade de vida, abrangendo aspectos funcionais, emocionais e catastróficos.",
+                "referencia_cientifica": "Ferreira PE, et al. (2005). Tinnitus handicap inventory: adaptação cultural para o Português brasileiro. Revista da Sociedade Brasileira de Fonoaudiologia. DOI: 10.1590/S1516-80342005000400007",
+                "conteudo": {
+                    "instrucoes": "O objetivo deste questionário é identificar as dificuldades que você pode estar sentindo por causa do seu zumbido. Por favor, responda 'Sim', 'Às vezes' ou 'Não' para cada item.",
+                    "perguntas": [
+                        {"id_pergunta": 1, "texto_pergunta": "Por causa do seu zumbido, é difícil para você se concentrar?"},
+                        {"id_pergunta": 2, "texto_pergunta": "A intensidade do seu zumbido torna difícil para você ouvir as pessoas?"},
+                        {"id_pergunta": 3, "texto_pergunta": "O seu zumbido faz você ficar com raiva?"},
+                        {"id_pergunta": 4, "texto_pergunta": "O seu zumbido faz você se sentir confuso(a)?"},
+                        {"id_pergunta": 5, "texto_pergunta": "Por causa do seu zumbido, você se sente desesperado(a)?"},
+                        {"id_pergunta": 6, "texto_pergunta": "Você reclama muito sobre o seu zumbido?"},
+                        {"id_pergunta": 7, "texto_pergunta": "Por causa do seu zumbido, você tem dificuldade para dormir à noite?"},
+                        {"id_pergunta": 8, "texto_pergunta": "Você sente como se não pudesse escapar do seu zumbido?"},
+                        {"id_pergunta": 9, "texto_pergunta": "O seu zumbido interfere na sua capacidade de desfrutar de atividades sociais?"},
+                        {"id_pergunta": 10, "texto_pergunta": "Por causa do seu zumbido, você se sente frustrado(a)?"},
+                        {"id_pergunta": 11, "texto_pergunta": "Por causa do seu zumbido, você sente que tem uma doença terrível?"},
+                        {"id_pergunta": 12, "texto_pergunta": "O seu zumbido torna difícil para você aproveitar a vida?"},
+                        {"id_pergunta": 13, "texto_pergunta": "O seu zumbido interfere com suas responsabilidades no trabalho ou em casa?"},
+                        {"id_pergunta": 14, "texto_pergunta": "Por causa do seu zumbido, você percebe que está frequentemente irritado(a)?"},
+                        {"id_pergunta": 15, "texto_pergunta": "Por causa do seu zumbido, é difícil para você ler?"},
+                        {"id_pergunta": 16, "texto_pergunta": "O seu zumbido deixa você chateado(a)?"},
+                        {"id_pergunta": 17, "texto_pergunta": "Você sente que seu problema de zumbido colocou estresse em seu relacionamento com membros da família e amigos?"},
+                        {"id_pergunta": 18, "texto_pergunta": "Você acha difícil desviar sua atenção do zumbido para outras coisas?"},
+                        {"id_pergunta": 19, "texto_pergunta": "Você sente que não tem controle sobre o seu zumbido?"},
+                        {"id_pergunta": 20, "texto_pergunta": "Por causa do seu zumbido, você frequentemente se sente cansado(a)?"},
+                        {"id_pergunta": 21, "texto_pergunta": "Por causa do seu zumbido, você se sente deprimido(a)?"},
+                        {"id_pergunta": 22, "texto_pergunta": "O seu zumbido faz você se sentir ansioso(a)?"},
+                        {"id_pergunta": 23, "texto_pergunta": "Você sente que não consegue mais lidar com o seu zumbido?"},
+                        {"id_pergunta": 24, "texto_pergunta": "O seu zumbido piora quando você está sob estresse?"},
+                        {"id_pergunta": 25, "texto_pergunta": "O seu zumbido faz você se sentir inseguro(a)?"}
+                    ],
+                    "opcoes_resposta": [
+                        {"texto": "Sim", "valor": 4},
+                        {"texto": "Às vezes", "valor": 2},
+                        {"texto": "Não", "valor": 0}
+                    ],
+                    "interpretacao_escore": [
+                        {"limite_inferior": 0, "limite_superior": 16, "classificacao": "Grau 1: Desprezível", "recomendacao": "O zumbido é percebido apenas em ambientes silenciosos e é facilmente mascarado. Geralmente não requer intervenção."},
+                        {"limite_inferior": 18, "limite_superior": 36, "classificacao": "Grau 2: Leve", "recomendacao": "O zumbido pode ser ignorado com esforço e não interfere no sono. Aconselhamento e orientação podem ser suficientes."},
+                        {"limite_inferior": 38, "limite_superior": 56, "classificacao": "Grau 3: Moderado", "recomendacao": "O zumbido é percebido durante as atividades diárias e pode interferir no sono. Intervenção audiológica é recomendada."},
+                        {"limite_inferior": 58, "limite_superior": 76, "classificacao": "Grau 4: Severo", "recomendacao": "O zumbido interfere em quase todas as atividades e perturba o sono. Tratamento ativo é necessário."},
+                        {"limite_inferior": 78, "limite_superior": 100, "classificacao": "Grau 5: Catastrófico", "recomendacao": "O zumbido é o foco principal da atenção do paciente e interfere em todas as áreas da vida. Requer intervenção multidisciplinar."}
+                    ]
+                }
+            },
+            {
+                "sigla": "DHI",
+                "nome_completo_pt": "Inventário de Desvantagem da Tontura",
+                "nome_completo_en": "Dizziness Handicap Inventory",
+                "descricao": "Mede os efeitos incapacitantes da tontura na qualidade de vida, avaliando domínios físico, emocional e funcional.",
+                "referencia_cientifica": "Castro ASO, et al. (2007). Versão brasileira do Dizziness Handicap Inventory. Pró-Fono Revista de Atualização Científica. DOI: 10.1590/s0104-56872007000100011",
+                "conteudo": {
+                    "instrucoes": "O objetivo deste questionário é identificar as dificuldades que você pode estar sentindo por causa de sua tontura ou desequilíbrio. Por favor, responda a todas as perguntas.",
+                    "perguntas": [
+                        {"id_pergunta": 1, "texto_pergunta": "Olhar para cima aumenta seu problema?"},
+                        {"id_pergunta": 2, "texto_pergunta": "Por causa do seu problema, você se sente frustrado(a)?"},
+                        {"id_pergunta": 3, "texto_pergunta": "Por causa do seu problema, você restringe suas viagens a negócios ou lazer?"},
+                        {"id_pergunta": 4, "texto_pergunta": "Andar no corredor de um supermercado aumenta seu problema?"},
+                        {"id_pergunta": 5, "texto_pergunta": "Por causa do seu problema, você tem dificuldade para entrar ou sair da cama?"},
+                        {"id_pergunta": 6, "texto_pergunta": "Seu problema restringe significativamente sua participação em atividades sociais?"},
+                        {"id_pergunta": 7, "texto_pergunta": "Por causa do seu problema, você tem dificuldade para ler?"},
+                        {"id_pergunta": 8, "texto_pergunta": "Realizar atividades como esportes ou tarefas domésticas aumenta seu problema?"},
+                        {"id_pergunta": 9, "texto_pergunta": "Por causa do seu problema, você tem medo de sair de casa sem ter alguém com você?"},
+                        {"id_pergunta": 10, "texto_pergunta": "Por causa do seu problema, você já ficou envergonhado(a) na frente dos outros?"},
+                        {"id_pergunta": 11, "texto_pergunta": "Movimentos rápidos da cabeça aumentam seu problema?"},
+                        {"id_pergunta": 12, "texto_pergunta": "Por causa do seu problema, você evita alturas?"},
+                        {"id_pergunta": 13, "texto_pergunta": "Virar-se na cama aumenta seu problema?"},
+                        {"id_pergunta": 14, "texto_pergunta": "Por causa do seu problema, é difícil para você fazer trabalhos domésticos pesados?"},
+                        {"id_pergunta": 15, "texto_pergunta": "Por causa do seu problema, você tem medo que as pessoas pensem que você está embriagado(a)?"},
+                        {"id_pergunta": 16, "texto_pergunta": "Por causa do seu problema, é difícil para você caminhar sozinho(a)?"},
+                        {"id_pergunta": 17, "texto_pergunta": "Andar na calçada aumenta seu problema?"},
+                        {"id_pergunta": 18, "texto_pergunta": "Por causa do seu problema, é difícil para você se concentrar?"},
+                        {"id_pergunta": 19, "texto_pergunta": "Por causa do seu problema, é difícil para você andar pela sua casa no escuro?"},
+                        {"id_pergunta": 20, "texto_pergunta": "Por causa do seu problema, você tem medo de ficar em casa sozinho(a)?"},
+                        {"id_pergunta": 21, "texto_pergunta": "Por causa do seu problema, você se sente incapacitado(a)?"},
+                        {"id_pergunta": 22, "texto_pergunta": "Seu problema colocou estresse em seu relacionamento com membros da sua família ou amigos?"},
+                        {"id_pergunta": 23, "texto_pergunta": "Por causa do seu problema, você está deprimido(a)?"},
+                        {"id_pergunta": 24, "texto_pergunta": "Seu problema interfere com seu trabalho ou responsabilidades domésticas?"},
+                        {"id_pergunta": 25, "texto_pergunta": "Curvar-se aumenta seu problema?"}
+                    ],
+                    "opcoes_resposta": [
+                        {"texto": "Sim", "valor": 4},
+                        {"texto": "Às vezes", "valor": 2},
+                        {"texto": "Não", "valor": 0}
+                    ],
+                    "interpretacao_escore": [
+                        {"limite_inferior": 0, "limite_superior": 30, "classificacao": "Desvantagem Leve", "recomendacao": "Impacto mínimo nas atividades diárias. Pode se beneficiar de educação e manobras simples, se aplicável."},
+                        {"limite_inferior": 31, "limite_superior": 60, "classificacao": "Desvantagem Moderada", "recomendacao": "Impacto significativo na qualidade de vida. Reabilitação vestibular é fortemente recomendada."},
+                        {"limite_inferior": 61, "limite_superior": 100, "classificacao": "Desvantagem Severa", "recomendacao": "Impacto incapacitante. Requer avaliação completa e um programa de reabilitação intensivo."}
+                    ]
+                }
+            }
+        ],
+        "Rinologia": [
+            {
+                "sigla": "SNOT-22",
+                "nome_completo_pt": "Teste de Desfecho Nasossinusal-22",
+                "nome_completo_en": "Sino-Nasal Outcome Test-22",
+                "descricao": "Avalia a qualidade de vida específica de pacientes com doenças nasossinusais, como a rinossinusite crônica.",
+                "referencia_cientifica": "Kosugi EM, et al. (2011). Translation, cross-cultural adaptation and validation of SinoNasal Outcome Test (SNOT) - 22 to Brazilian Portuguese. Brazilian Journal of Otorhinolaryngology. DOI: 10.1590/S1808-86942011000500021",
+                "conteudo": {
+                    "instrucoes": "Abaixo, você encontrará uma lista de sintomas e problemas. Gostaríamos de saber mais sobre esses problemas nas duas últimas semanas. Por favor, classifique a intensidade dos sintomas.",
+                    "perguntas": [
+                        {"id_pergunta": 1, "texto_pergunta": "Necessidade de assoar o nariz"},
+                        {"id_pergunta": 2, "texto_pergunta": "Espirros"},
+                        {"id_pergunta": 3, "texto_pergunta": "Nariz 'escorrendo'"},
+                        {"id_pergunta": 4, "texto_pergunta": "Tosse"},
+                        {"id_pergunta": 5, "texto_pergunta": "Secreção do nariz indo para a garganta"},
+                        {"id_pergunta": 6, "texto_pergunta": "Secreção grossa saindo do nariz"},
+                        {"id_pergunta": 7, "texto_pergunta": "Sensação de ouvido cheio ou tampado"},
+                        {"id_pergunta": 8, "texto_pergunta": "Tontura ou vertigem"},
+                        {"id_pergunta": 9, "texto_pergunta": "Dor de ouvido"},
+                        {"id_pergunta": 10, "texto_pergunta": "Dor ou pressão no rosto"},
+                        {"id_pergunta": 11, "texto_pergunta": "Dificuldade para conseguir dormir"},
+                        {"id_pergunta": 12, "texto_pergunta": "Acorda no meio da noite"},
+                        {"id_pergunta": 13, "texto_pergunta": "Falta de uma boa noite de sono"},
+                        {"id_pergunta": 14, "texto_pergunta": "Acorda cansado"},
+                        {"id_pergunta": 15, "texto_pergunta": "Fadiga ou cansaço durante o dia"},
+                        {"id_pergunta": 16, "texto_pergunta": "Diminuição do seu rendimento para realizar atividades do seu dia a dia"},
+                        {"id_pergunta": 17, "texto_pergunta": "Diminuição da sua concentração para realizar atividades do seu dia a dia"},
+                        {"id_pergunta": 18, "texto_pergunta": "Frustrado, agitado ou irritado"},
+                        {"id_pergunta": 19, "texto_pergunta": "Tristeza"},
+                        {"id_pergunta": 20, "texto_pergunta": "Sensação de vergonha"},
+                        {"id_pergunta": 21, "texto_pergunta": "Dificuldade para sentir 'cheiros' ou 'gostos'"},
+                        {"id_pergunta": 22, "texto_pergunta": "Nariz entupido"}
+                    ],
+                    "opcoes_resposta": [
+                        {"texto": "Nenhum problema", "valor": 0},
+                        {"texto": "Problema muito leve", "valor": 1},
+                        {"texto": "Problema leve", "valor": 2},
+                        {"texto": "Problema moderado", "valor": 3},
+                        {"texto": "Problema grave", "valor": 4},
+                        {"texto": "Pior problema possível", "valor": 5}
+                    ],
+                    "interpretacao_escore": [
+                        {"limite_inferior": 0, "limite_superior": 10, "classificacao": "Sintomas Leves/Ausentes", "recomendacao": "Impacto mínimo na qualidade de vida."},
+                        {"limite_inferior": 11, "limite_superior": 30, "classificacao": "Sintomas Moderados", "recomendacao": "Impacto considerável, tratamento clínico geralmente indicado."},
+                        {"limite_inferior": 31, "limite_superior": 110, "classificacao": "Sintomas Severos", "recomendacao": "Grande impacto na qualidade de vida, pode indicar necessidade de avaliação para intervenção cirúrgica."}
+                    ]
+                }
+            },
+            {
+                "sigla": "NOSE",
+                "nome_completo_pt": "Avaliação dos Sintomas de Obstrução Nasal",
+                "nome_completo_en": "Nasal Obstruction Symptom Evaluation Scale",
+                "descricao": "Avalia a percepção subjetiva da obstrução nasal e seu impacto na qualidade de vida.",
+                "referencia_cientifica": "Bezerra TFP, et al. (2011). Cross-cultural adaptation and validation of a Quality of Life questionnaire: The Nasal Obstruction Symptom Evaluation questionnaire. Rhinology. DOI: 10.4193/Rhin10.153",
+                "conteudo": {
+                    "instrucoes": "No último mês, o quão problemáticas foram as seguintes condições para você? Por favor, avalie cada item de acordo com a sua experiência.",
+                    "perguntas": [
+                        {"id_pergunta": 1, "texto_pergunta": "Congestão ou entupimento nasal"},
+                        {"id_pergunta": 2, "texto_pergunta": "Bloqueio ou obstrução nasal"},
+                        {"id_pergunta": 3, "texto_pergunta": "Dificuldade para respirar pelo nariz"},
+                        {"id_pergunta": 4, "texto_pergunta": "Dificuldade para dormir"},
+                        {"id_pergunta": 5, "texto_pergunta": "Incapacidade de obter ar suficiente pelo nariz durante exercícios ou esforço"}
+                    ],
+                    "opcoes_resposta": [
+                        {"texto": "Nenhum problema", "valor": 0},
+                        {"texto": "Problema muito leve", "valor": 1},
+                        {"texto": "Problema moderado", "valor": 2},
+                        {"texto": "Problema razoavelmente ruim", "valor": 3},
+                        {"texto": "Problema grave", "valor": 4}
+                    ],
+                    "interpretacao_escore": [
+                        {"limite_inferior": 5, "limite_superior": 25, "classificacao": "Obstrução Leve", "recomendacao": "Sintomas leves com baixo impacto."},
+                        {"limite_inferior": 30, "limite_superior": 50, "classificacao": "Obstrução Moderada", "recomendacao": "Sintomas que afetam a qualidade de vida, tratamento clínico pode ser necessário."},
+                        {"limite_inferior": 55, "limite_superior": 75, "classificacao": "Obstrução Grave", "recomendacao": "Sintomas significativos, avaliação para cirurgia pode ser considerada."},
+                        {"limite_inferior": 80, "limite_superior": 100, "classificacao": "Obstrução Extrema", "recomendacao": "Sintomas muito graves, forte indicação para avaliação cirúrgica."}
+                    ],
+                    "formula_calculo": "SOMA_DAS_RESPOSTAS * 5"
+                }
+            }
+        ],
+        "Laringologia_Fonoaudiologia": [
+            {
+                "sigla": "VHI-10",
+                "nome_completo_pt": "Índice de Desvantagem Vocal-10",
+                "nome_completo_en": "Voice Handicap Index-10",
+                "descricao": "Versão curta do VHI para avaliar a autopercepção da desvantagem vocal nos domínios funcional, físico e emocional.",
+                "referencia_cientifica": "Costa T, et al. (2004). The short version of the Voice Handicap Index (VHI-10) to the Brazilian Portuguese. In: 33rd Annual Symposium: Care of the Professional Voice.",
+                "conteudo": {
+                    "instrucoes": "Estas são afirmações que muitas pessoas usaram para descrever suas vozes e os efeitos de suas vozes em suas vidas. Circule a resposta que indica com que frequência você tem a mesma experiência.",
+                    "perguntas": [
+                        {"id_pergunta": 1, "texto_pergunta": "Minha voz me deixa tenso(a)."},
+                        {"id_pergunta": 2, "texto_pergunta": "As pessoas têm dificuldade em me ouvir."},
+                        {"id_pergunta": 3, "texto_pergunta": "As pessoas pedem para eu repetir quando falo cara a cara."},
+                        {"id_pergunta": 4, "texto_pergunta": "Sinto-me excluído(a) de conversas por causa da minha voz."},
+                        {"id_pergunta": 5, "texto_pergunta": "Minha voz varia ao longo do dia."},
+                        {"id_pergunta": 6, "texto_pergunta": "Fico ansioso(a) ou frustrado(a) por causa da minha voz."},
+                        {"id_pergunta": 7, "texto_pergunta": "Eu me esforço para usar minha voz."},
+                        {"id_pergunta": 8, "texto_pergunta": "Fico sem ar quando falo."},
+                        {"id_pergunta": 9, "texto_pergunta": "Minha voz soa rouca e seca."},
+                        {"id_pergunta": 10, "texto_pergunta": "Acho que as pessoas não entendem meu problema de voz."}
+                    ],
+                    "opcoes_resposta": [
+                        {"texto": "Nunca", "valor": 0},
+                        {"texto": "Quase Nunca", "valor": 1},
+                        {"texto": "Às vezes", "valor": 2},
+                        {"texto": "Quase Sempre", "valor": 3},
+                        {"texto": "Sempre", "valor": 4}
+                    ],
+                    "interpretacao_escore": [
+                        {"limite_inferior": 0, "limite_superior": 10, "classificacao": "Desvantagem Leve ou Normal", "recomendacao": "Autopercepção de desvantagem vocal mínima. Pode não requerer intervenção."},
+                        {"limite_inferior": 11, "limite_superior": 40, "classificacao": "Desvantagem Moderada a Severa", "recomendacao": "Indica uma desvantagem vocal significativa. Avaliação e terapia fonoaudiológica são recomendadas."}
+                    ]
+                }
+            },
+            {
+                "sigla": "EAT-10",
+                "nome_completo_pt": "Ferramenta de Avaliação da Alimentação-10",
+                "nome_completo_en": "Eating Assessment Tool-10",
+                "descricao": "Um instrumento de autorrelato de 10 itens para rastreio de disfagia (dificuldade de engolir).",
+                "referencia_cientifica": "Gonçalves MIR, et al. (2013). Cultural equivalence of the Brazilian version of the Eating Assessment Tool - EAT-10. CoDAS. DOI: 10.1590/s2317-17822013000200020",
+                "conteudo": {
+                    "instrucoes": "Para cada item abaixo, por favor, circule o número que melhor descreve seu problema. (0 = Nenhum problema, 4 = Problema grave)",
+                    "perguntas": [
+                        {"id_pergunta": 1, "texto_pergunta": "Meu problema para engolir resultou em perda de peso."},
+                        {"id_pergunta": 2, "texto_pergunta": "Meu problema para engolir interfere na minha capacidade de sair para comer."},
+                        {"id_pergunta": 3, "texto_pergunta": "Engolir líquidos exige esforço."},
+                        {"id_pergunta": 4, "texto_pergunta": "Engolir sólidos exige esforço."},
+                        {"id_pergunta": 5, "texto_pergunta": "Engolir pílulas exige esforço."},
+                        {"id_pergunta": 6, "texto_pergunta": "Engolir é doloroso."},
+                        {"id_pergunta": 7, "texto_pergunta": "O prazer de me alimentar é afetado pelo meu problema para engolir."},
+                        {"id_pergunta": 8, "texto_pergunta": "Quando engulo, a comida gruda na minha garganta."},
+                        {"id_pergunta": 9, "texto_pergunta": "Eu tusso quando como."},
+                        {"id_pergunta": 10, "texto_pergunta": "Engolir me deixa estressado(a)."}
+                    ],
+                    "opcoes_resposta": [
+                        {"texto": "Nenhum problema", "valor": 0},
+                        {"texto": "1", "valor": 1},
+                        {"texto": "2", "valor": 2},
+                        {"texto": "3", "valor": 3},
+                        {"texto": "Problema grave", "valor": 4}
+                    ],
+                    "interpretacao_escore": [
+                        {"limite_inferior": 0, "limite_superior": 2, "classificacao": "Normal", "recomendacao": "Não sugere risco de disfagia."},
+                        {"limite_inferior": 3, "limite_superior": 40, "classificacao": "Anormal / Risco de Disfagia", "recomendacao": "Sugere risco de disfagia. Recomenda-se avaliação fonoaudiológica e/ou médica especializada."}
+                    ]
+                }
+            },
+            {
+                "sigla": "STOP-Bang",
+                "nome_completo_pt": "Questionário STOP-Bang",
+                "nome_completo_en": "STOP-Bang Questionnaire",
+                "descricao": "Ferramenta de rastreio para Apneia Obstrutiva do Sono (AOS) em adultos.",
+                "referencia_cientifica": "Chung F, et al. (2008). STOP questionnaire: a tool to screen patients for obstructive sleep apnea. Anesthesiology. DOI: 10.1097/ALN.0b013e31816d83e4. (Validação em português por vários estudos clínicos no Brasil).",
+                "conteudo": {
+                    "instrucoes": "Por favor, responda 'Sim' ou 'Não' para as seguintes perguntas.",
+                    "perguntas": [
+                        {"id_pergunta": 1, "texto_pergunta": "S - Ronca? (Ronca alto o suficiente para ser ouvido através de portas fechadas?)"},
+                        {"id_pergunta": 2, "texto_pergunta": "T - Cansado? (Sente-se frequentemente cansado, fadigado ou sonolento durante o dia?)"},
+                        {"id_pergunta": 3, "texto_pergunta": "O - Observado? (Alguém observou você parar de respirar durante o sono?)"},
+                        {"id_pergunta": 4, "texto_pergunta": "P - Pressão? (Você tem ou está em tratamento para pressão alta?)"},
+                        {"id_pergunta": 5, "texto_pergunta": "B - IMC? (Índice de Massa Corporal maior que 35 kg/m²?)"},
+                        {"id_pergunta": 6, "texto_pergunta": "A - Idade? (Idade acima de 50 anos?)"},
+                        {"id_pergunta": 7, "texto_pergunta": "N - Pescoço? (Circunferência do pescoço maior que 40 cm?)"},
+                        {"id_pergunta": 8, "texto_pergunta": "G - Gênero? (Gênero masculino?)"}
+                    ],
+                    "opcoes_resposta": [
+                        {"texto": "Sim", "valor": 1},
+                        {"texto": "Não", "valor": 0}
+                    ],
+                    "interpretacao_escore": [
+                        {"limite_inferior": 0, "limite_superior": 2, "classificacao": "Baixo Risco de AOS", "recomendacao": "A probabilidade de ter AOS moderada a grave é baixa."},
+                        {"limite_inferior": 3, "limite_superior": 4, "classificacao": "Risco Intermediário de AOS", "recomendacao": "A probabilidade de ter AOS moderada a grave é intermediária."},
+                        {"limite_inferior": 5, "limite_superior": 8, "classificacao": "Alto Risco de AOS", "recomendacao": "A probabilidade de ter AOS moderada a grave é alta. Recomenda-se avaliação com especialista em sono."}
+                    ]
+                }
+            }
+        ]
+    }
+    </script>
+    
+    <!-- Script da Aplicação -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Elementos da UI
+            const views = {
+                selector: document.getElementById('selector-view'),
+                questionnaire: document.getElementById('questionnaire-view'),
+                results: document.getElementById('results-view'),
+            };
+            const searchInput = document.getElementById('search-input');
+            const filterSelect = document.getElementById('filter-select');
+            const questionnaireList = document.getElementById('questionnaire-list');
+            const backBtn = document.getElementById('back-to-selector-btn');
+            const calculateBtn = document.getElementById('calculate-score-btn');
+            const newQuestionnaireBtn = document.getElementById('new-questionnaire-btn');
+            const printBtn = document.getElementById('print-results-btn');
+            const formError = document.getElementById('form-error');
+
+            // Carrega os dados JSON
+            const promsDataRaw = JSON.parse(document.getElementById('proms-data').textContent);
+            const allQuestionnaires = Object.values(promsDataRaw).flat();
+
+            // Estado da aplicação
+            let currentQuestionnaire = null;
+            let patientAnswers = {};
+
+            // Função para mudar a visualização
+            const switchView = (viewName) => {
+                Object.values(views).forEach(view => view.classList.add('hidden'));
+                if (views[viewName]) {
+                    views[viewName].classList.remove('hidden');
+                    window.scrollTo(0, 0);
+                }
+            };
+            
+            // Renderiza a lista de questionários
+            const renderQuestionnaireList = (questionnaires) => {
+                questionnaireList.innerHTML = '';
+                if (questionnaires.length === 0) {
+                    questionnaireList.innerHTML = `<p class="text-gray-500 col-span-full text-center">Nenhum questionário encontrado.</p>`;
+                    return;
+                }
+                questionnaires.forEach(q => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white p-5 rounded-lg shadow-md hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer';
+                    card.innerHTML = `
+                        <h3 class="font-bold text-lg text-teal-700">${q.sigla}</h3>
+                        <p class="text-gray-600 text-sm">${q.nome_completo_pt}</p>
+                        <p class="text-xs text-gray-400 mt-2">${q.descricao}</p>
+                    `;
+                    card.addEventListener('click', () => startQuestionnaire(q.sigla));
+                    questionnaireList.appendChild(card);
+                });
+            };
+
+            // Filtra e busca os questionários
+            const filterAndSearch = () => {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                const filterValue = filterSelect.value;
+                
+                const filtered = allQuestionnaires.filter(q => {
+                    const matchesFilter = filterValue === 'all' || promsDataRaw[filterValue]?.some(item => item.sigla === q.sigla);
+                    
+                    const matchesSearch = searchTerm === '' ||
+                        q.sigla.toLowerCase().includes(searchTerm) ||
+                        q.nome_completo_pt.toLowerCase().includes(searchTerm) ||
+                        q.descricao.toLowerCase().includes(searchTerm) ||
+                        (q.keywords_pt && q.keywords_pt.some(k => k.toLowerCase().includes(searchTerm)));
+
+                    return matchesFilter && matchesSearch;
+                });
+                renderQuestionnaireList(filtered);
+            };
+
+            // Inicia um questionário
+            const startQuestionnaire = (sigla) => {
+                currentQuestionnaire = allQuestionnaires.find(q => q.sigla === sigla);
+                if (!currentQuestionnaire) return;
+
+                patientAnswers = {};
+                document.getElementById('questionnaire-title').textContent = currentQuestionnaire.nome_completo_pt;
+                document.getElementById('questionnaire-instructions').textContent = currentQuestionnaire.conteudo.instrucoes;
+                
+                const form = document.getElementById('questionnaire-form');
+                form.innerHTML = '';
+                
+                currentQuestionnaire.conteudo.perguntas.forEach((p, index) => {
+                    const questionBlock = document.createElement('div');
+                    questionBlock.className = 'mb-6 p-4 rounded-md bg-gray-50';
+                    let optionsHTML = `<div class="flex flex-wrap gap-x-6 gap-y-2 mt-2">`;
+                    currentQuestionnaire.conteudo.opcoes_resposta.forEach(opt => {
+                        optionsHTML += `
+                            <label class="inline-flex items-center cursor-pointer">
+                                <input type="radio" name="q${p.id_pergunta}" value="${opt.valor}" class="form-radio text-teal-600" required>
+                                <span class="ml-2 text-gray-700">${opt.texto}</span>
+                            </label>
+                        `;
+                    });
+                    optionsHTML += `</div>`;
+                    
+                    questionBlock.innerHTML = `
+                        <p class="font-semibold text-gray-800">${index + 1}. ${p.texto_pergunta}</p>
+                        ${optionsHTML}
+                    `;
+                    form.appendChild(questionBlock);
+                });
+                
+                formError.classList.add('hidden');
+                switchView('questionnaire');
+            };
+
+            // Calcula o escore
+            const calculateScore = () => {
+                const form = document.getElementById('questionnaire-form');
+                if (!form.checkValidity()) {
+                    formError.classList.remove('hidden');
+                    return;
+                }
+                formError.classList.add('hidden');
+
+                let totalScore = 0;
+                patientAnswers = {};
+                const formData = new FormData(form);
+                
+                for (const [key, value] of formData.entries()) {
+                    const questionId = parseInt(key.replace('q', ''));
+                    const answerValue = parseInt(value);
+                    totalScore += answerValue;
+
+                    const question = currentQuestionnaire.conteudo.perguntas.find(p => p.id_pergunta === questionId);
+                    const option = currentQuestionnaire.conteudo.opcoes_resposta.find(o => o.valor === answerValue);
+                    patientAnswers[questionId] = {
+                        text: question.texto_pergunta,
+                        answer: option.texto,
+                        value: answerValue
+                    };
+                }
+
+                if (currentQuestionnaire.conteudo.formula_calculo === "SOMA_DAS_RESPOSTAS * 5") {
+                    totalScore *= 5;
+                }
+
+                renderResults(totalScore);
+            };
+
+            // Renderiza os resultados
+            const renderResults = (score) => {
+                document.getElementById('results-title').textContent = currentQuestionnaire.nome_completo_pt;
+                document.getElementById('total-score').textContent = score;
+
+                const interpretation = currentQuestionnaire.conteudo.interpretacao_escore.find(
+                    interp => score >= interp.limite_inferior && score <= interp.limite_superior
+                );
+                
+                const interpretationElement = document.getElementById('score-interpretation');
+                if (interpretation) {
+                    interpretationElement.innerHTML = `<strong class="text-teal-800">${interpretation.classificacao}:</strong> ${interpretation.recomendacao}`;
+                } else {
+                    interpretationElement.textContent = 'Interpretação não disponível para este escore.';
+                }
+                
+                // Renderizar respostas
+                const answersList = document.getElementById('answers-list');
+                answersList.innerHTML = '';
+                currentQuestionnaire.conteudo.perguntas.forEach((p, index) => {
+                    const answer = patientAnswers[p.id_pergunta];
+                    if (answer) {
+                        answersList.innerHTML += `
+                            <div class="border-b pb-1">
+                                <p><strong>${index + 1}. ${answer.text}</strong></p>
+                                <p class="pl-4"><em>Resposta: ${answer.answer} (Valor: ${answer.value})</em></p>
+                            </div>
+                        `;
+                    }
+                });
+
+
+                switchView('results');
+            };
+
+            // Inicialização
+            const init = () => {
+                renderQuestionnaireList(allQuestionnaires);
+                searchInput.addEventListener('input', filterAndSearch);
+                filterSelect.addEventListener('change', filterAndSearch);
+                backBtn.addEventListener('click', () => switchView('selector'));
+                calculateBtn.addEventListener('click', calculateScore);
+                newQuestionnaireBtn.addEventListener('click', () => switchView('selector'));
+                printBtn.addEventListener('click', () => window.print());
+            };
+
+            init();
+        });
+    </script>
+</body>
+</html>
