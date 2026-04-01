@@ -11,6 +11,7 @@ import DizzinessDHI from './calculators/DizzinessDHI';
 import VoiceVHI10 from './calculators/VoiceVHI10';
 import DysphagiaEAT10 from './calculators/DysphagiaEAT10';
 import SleepApneaSTOPBang from './calculators/SleepApneaSTOPBang';
+import SleepApneaEpworth from './calculators/SleepApneaEpworth';
 
 // Novas importações (Lote 4)
 import CochlearNCIQ from './calculators/CochlearNCIQ';
@@ -22,7 +23,7 @@ import NeckMalignancyCalc from './calculators/NeckMalignancyCalc';
 
 type CalcTab =
   | 'sinusite' | 'nose' | 'lund' | 'snot22' | 'tnm' | 'refluxo' | 'pediatria'
-  | 'thi' | 'dhi' | 'vhi10' | 'eat10' | 'stopbang'
+  | 'thi' | 'dhi' | 'vhi10' | 'eat10' | 'stopbang' | 'epworth'
   | 'nciq' | 'comq12' | 'voiss' | 'sn5' | 'cpss' | 'malig';
 
 interface TabDef { id: CalcTab; name: string; area: string; }
@@ -48,6 +49,7 @@ const CALCULATORS: TabDef[] = [
   { id: 'refluxo', name: 'RSI — Refluxo', area: 'Laringologia' },
   { id: 'voiss', name: 'VoiSS — Sintomas', area: 'Laringologia' },
   // Sono
+  { id: 'epworth', name: 'Epworth — ESE', area: 'Sono' },
   { id: 'stopbang', name: 'STOP-Bang', area: 'Sono' },
   // Intensiva
   { id: 'cpss', name: 'CPSS — Pneumonia', area: 'Intensiva' },
@@ -73,7 +75,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
           <div className="text-center sm:text-left">
             <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">OTTO CALC-HUB</h1>
-            <p className="text-[#5CC6BA] font-medium mt-0.5 text-sm">18 Instrumentos Clínicos em Otorrinolaringologia</p>
+            <p className="text-[#5CC6BA] font-medium mt-0.5 text-sm">19 Instrumentos Clínicos em Otorrinolaringologia</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <div className="flex items-center bg-white/10 px-3 py-2 rounded-lg border border-white/20 gap-2">
@@ -132,6 +134,7 @@ export default function App() {
           {activeTab === 'vhi10' && <VoiceVHI10 {...sharedProps} />}
           {activeTab === 'eat10' && <DysphagiaEAT10 {...sharedProps} />}
           {activeTab === 'stopbang' && <SleepApneaSTOPBang {...sharedProps} />}
+          {activeTab === 'epworth' && <SleepApneaEpworth {...sharedProps} />}
           
           {/* Lote 4 Novidades */}
           {activeTab === 'nciq' && <CochlearNCIQ {...sharedProps} />}
@@ -144,7 +147,7 @@ export default function App() {
       </main>
 
       <footer className="bg-white border-t p-4 text-center text-slate-400 text-xs mt-auto shadow-inner">
-        © 2026 OTTO Triagem | 18 Instrumentos Clínicos Validados em ORL
+        © 2026 OTTO Triagem | 19 Instrumentos Clínicos Validados em ORL
       </footer>
     </div>
   );
