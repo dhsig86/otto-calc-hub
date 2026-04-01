@@ -103,6 +103,11 @@ export default function SinusiteCalc({ patientId, doctorId }: Props) {
           {patientId && <p className="mt-2 text-sm font-semibold text-[#00A0AF] bg-[#e6f6f8] px-3 py-1.5 rounded-full inline-block">👤 Paciente: {patientId}</p>}
         </div>
 
+        <div className="bg-sky-50 border border-sky-200 rounded-xl p-5 mb-6 text-sm text-sky-900 shadow-sm transition-all hover:shadow-md">
+          <p className="mb-2"><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Algoritmo clínico diagnóstico fenotípico de Rinossinusite Aguda ou Crônica segundo consensus EPOS 2020.</span></p>
+          <p><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">O prescritor preenche o questionário durante a anamnese guiada para blindar o diagnóstico exato e embasar antibiótocoterapia sistêmica ou tópica.</span></p>
+        </div>
+
         {/* Escolha da Diretriz */}
         <div className="mb-8">
           <label className="block text-sm font-semibold text-slate-700 mb-4 text-center">Selecione o Guideline:</label>

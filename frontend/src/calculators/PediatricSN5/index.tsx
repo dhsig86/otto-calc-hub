@@ -75,6 +75,11 @@ export default function PediatricSN5({ patientId, doctorId }: Props) {
           {patientId && <p className="mt-2 text-sm font-semibold text-[#00A0AF] bg-[#e6f6f8] px-3 py-1.5 rounded-full inline-block">👤 Paciente: {patientId}</p>}
         </div>
 
+        <div className="bg-sky-50 border border-sky-200 rounded-xl p-5 mb-6 text-sm text-sky-900 shadow-sm transition-all hover:shadow-md">
+          <p className="mb-2"><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Aferir quantitativamente a alteração fisiológica por problemas sinonasais crônicos na faixa pediátrica.</span></p>
+          <p><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Os pais ou cuidadores avaliam a constância clínica do último mês usando a escala VAS de 1-7. Funciona como evidência validada para a indicação de adenoidectomia.</span></p>
+        </div>
+
         <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-sm text-amber-800">
           <strong>Para os Pais/Cuidadores:</strong> Avalie o impacto de cada sintoma no paciente pediátrico nas últimas 4 semanas de 1 (Nunca) a 7 (Sempre).
         </div>

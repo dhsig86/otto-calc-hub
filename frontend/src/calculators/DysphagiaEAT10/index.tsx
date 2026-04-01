@@ -72,6 +72,11 @@ export default function DysphagiaEAT10({ patientId, doctorId }: Props) {
           {patientId && <p className="mt-2 text-sm font-semibold text-[#00A0AF] bg-[#e6f6f8] px-3 py-1.5 rounded-full inline-block">👤 Paciente: {patientId}</p>}
         </div>
 
+        <div className="bg-rose-50 border border-rose-200 rounded-xl p-5 mb-6 text-sm text-rose-900 shadow-sm transition-all hover:shadow-md">
+          <p className="mb-2"><strong className="text-rose-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Testar sistematicamente deficiências silenciosas e disfagias obstrutivas no esôfago proximal garantindo proteção orofaríngea de base.</span></p>
+          <p><strong className="text-rose-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">O paciente elenca 0-4 na dor e angústia das refeições deglutidas de hoje e pregressas. Respostas com pontuações focais ditam endoscopia digestiva ou videodeglutograma urgente.</span></p>
+        </div>
+
         <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-sm text-amber-800">
           <strong>Instrução:</strong> Para cada item abaixo, selecione o número que melhor descreve o seu problema. (0 = Nenhum problema, 4 = Problema grave)
         </div>

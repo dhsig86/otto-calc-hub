@@ -118,6 +118,11 @@ export default function Snot22Calc({ patientId, doctorId }: Props) {
           {patientId && <p className="text-sm font-semibold text-[#00A0AF] bg-[#e6f6f8] px-3 py-1.5 rounded-full inline-block">👤 Paciente: {patientId}</p>}
         </div>
 
+        <div className="bg-sky-50 border border-sky-200 rounded-xl p-5 mb-6 text-sm text-sky-900 shadow-sm transition-all hover:shadow-md">
+          <p className="mb-2"><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Avaliar o impacto e peso sintomático da rinossinusite crônica (com ou sem polipose) na qualidade de vida e sono.</span></p>
+          <p><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Paciente pontua as 22 queixas. Aplicar na triagem cirúrgica e como métrica de eficácia analítica no seguimento pós-tratamento.</span></p>
+        </div>
+
         {/* Barra de Progresso */}
         <div className="mb-8 flex flex-col items-center">
           <div className="w-full bg-slate-200 rounded-full h-2 mb-2">

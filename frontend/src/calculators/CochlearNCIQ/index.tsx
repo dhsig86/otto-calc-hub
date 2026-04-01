@@ -71,6 +71,11 @@ export default function CochlearNCIQ({ patientId, doctorId }: Props) {
           {patientId && <p className="mt-2 text-sm font-semibold text-[#00A0AF] bg-[#e6f6f8] px-3 py-1.5 rounded-full inline-block">👤 Paciente: {patientId}</p>}
         </div>
 
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-6 text-sm text-amber-900 shadow-sm transition-all hover:shadow-md">
+          <p className="mb-2"><strong className="text-amber-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Validar a transição qualitativa global (domínios cognitivo/telefônico, convívio tátil social) que o dispositivo de implante cirúrgico gerou.</span></p>
+          <p><strong className="text-amber-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Discutido e acompanhado prospectivamente com o paciente por meses depois das ativações auditórias mensais (mapeamentos fonológicos da unidade de controle).</span></p>
+        </div>
+
         <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-sm text-amber-800">
           <strong>Instrução:</strong> Responda de acordo com sua percepção atual usando o implante coclear no dia a dia.
         </div>

@@ -95,6 +95,11 @@ export default function PediatricDosesCalc({ patientId, doctorId }: Props) {
           {patientId && <p className="mt-2 text-sm font-semibold text-[#00A0AF] bg-[#e6f6f8] px-3 py-1.5 rounded-full inline-block">👤 Paciente: {patientId}</p>}
         </div>
 
+        <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5 mb-6 text-sm text-emerald-900 shadow-sm transition-all hover:shadow-md">
+          <p className="mb-2"><strong className="text-emerald-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Assegurar agilidade irretocável provendo alíquotas infalíveis com miligramagens diárias padronizadas pela literatura médica na pediatria ORL aguda.</span></p>
+          <p><strong className="text-emerald-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Lança-se confiavelmente o peso fidedigno da criança aferido no último minuto e prescreve-se os resgates otalgiários infantis em xarope contornando over-doses e erros em decimais de cálculos falhos.</span></p>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
             <label className="block text-sm font-extrabold text-[#00A0AF] mb-2">Peso da Criança (kg):</label>

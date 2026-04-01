@@ -67,6 +67,11 @@ export default function VoiceVHI10({ patientId, doctorId }: Props) {
           {patientId && <p className="mt-2 text-sm font-semibold text-[#00A0AF] bg-[#e6f6f8] px-3 py-1.5 rounded-full inline-block">👤 Paciente: {patientId}</p>}
         </div>
 
+        <div className="bg-rose-50 border border-rose-200 rounded-xl p-5 mb-6 text-sm text-rose-900 shadow-sm transition-all hover:shadow-md">
+          <p className="mb-2"><strong className="text-rose-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Índice abreviado ágil para quantificar distúrbios da emissão perante rouquidão e disfonias suspeitas de danos fonoarticulatórios orgânicos ou cistos.</span></p>
+          <p><strong className="text-rose-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Lido e assinalado pelo paciente na espera do consultório. Alta chance preditiva para lesões antes mesmo do escopo endoscópio adentrar a glote.</span></p>
+        </div>
+
         <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-sm text-amber-800">
           <strong>Instrução:</strong> Circule a resposta que indica com que frequência você tem a mesma experiência descrita.
         </div>

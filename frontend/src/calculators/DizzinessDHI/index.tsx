@@ -75,6 +75,11 @@ export default function DizzinessDHI({ patientId, doctorId }: Props) {
           {patientId && <p className="mt-2 text-sm font-semibold text-[#00A0AF] bg-[#e6f6f8] px-3 py-1.5 rounded-full inline-block">👤 Paciente: {patientId}</p>}
         </div>
 
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-6 text-sm text-amber-900 shadow-sm transition-all hover:shadow-md">
+          <p className="mb-2"><strong className="text-amber-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Classificar objetivamente quão desabilitante psicologicamente é a tontura (labirintopatia) na performance diária de pacientes com vetigem crônica.</span></p>
+          <p><strong className="text-amber-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Paciente responde às questões baseadas em reflexos diários limitantes devidos à ilusão vestibular.</span></p>
+        </div>
+
         <div className="mb-6">
           <div className="flex justify-between text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">
             <span>Grupo {page} de {TOTAL_PAGES}</span>

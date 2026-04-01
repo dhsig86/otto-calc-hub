@@ -65,6 +65,11 @@ export default function TraqueoCPSS({ patientId, doctorId }: Props) {
           {patientId && <p className="mt-2 text-sm font-semibold text-[#00A0AF] bg-[#e6f6f8] px-3 py-1.5 rounded-full inline-block">👤 Paciente: {patientId}</p>}
         </div>
 
+        <div className="bg-orange-50 border border-orange-200 rounded-xl p-5 mb-6 text-sm text-orange-900 shadow-sm transition-all hover:shadow-md">
+          <p className="mb-2"><strong className="text-orange-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Diferenciar a mera colonização da via aérea por tubo perante reais patógenos inflamatórios bacterianos na pneumonia intrínseca às secreções.</span></p>
+          <p><strong className="text-orange-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Checklist diário intensivo por via médica para unificar os desvios térmicos aos decaimentos de oxigênio PaO2 guiando antimicrobianos endovenosos em leito cirúrgico ou UTI.</span></p>
+        </div>
+
         <div className="space-y-6 mb-8">
           {CPSS_FIELDS.map((field) => {
             const selected = answers[field.id];

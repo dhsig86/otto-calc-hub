@@ -67,6 +67,11 @@ export default function VoiceVoiSS({ patientId, doctorId }: Props) {
           {patientId && <p className="mt-2 text-sm font-semibold text-[#00A0AF] bg-[#e6f6f8] px-3 py-1.5 rounded-full inline-block">👤 Paciente: {patientId}</p>}
         </div>
 
+        <div className="bg-rose-50 border border-rose-200 rounded-xl p-5 mb-6 text-sm text-rose-900 shadow-sm transition-all hover:shadow-md">
+          <p className="mb-2"><strong className="text-rose-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Ferramenta vocal superlativa de avaliação, unicamente englobante na caça de dor muscular paralela aos desvios primários da prega fibótica vocal.</span></p>
+          <p><strong className="text-rose-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Autoaplicação protocolada exigindo atenção contínua. Excelente como matriz fonoaudiológica balizadora ou checklist pós anestesia profunda da via glótica.</span></p>
+        </div>
+
         <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-sm text-amber-800">
           <strong>Instrução:</strong> Com que frequência você sente ou apresentou os comportamentos abaixo?
         </div>

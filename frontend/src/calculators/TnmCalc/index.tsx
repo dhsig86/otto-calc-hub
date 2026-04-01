@@ -245,6 +245,11 @@ Data: ${new Date().toLocaleDateString('pt-BR')}`;
           {patientId && <p className="mt-2 text-sm font-semibold text-[#00A0AF] bg-[#e6f6f8] px-3 py-1.5 rounded-full inline-block">👤 Paciente: {patientId}</p>}
         </div>
 
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 mb-6 text-sm text-slate-900 shadow-sm transition-all hover:shadow-md">
+          <p className="mb-2"><strong className="text-slate-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Estadiamento oncológico anatômico clinicamente unificado para câncer de cabeça e pescoço (UICC/AJCC).</span></p>
+          <p><strong className="text-slate-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">O médico consolida os dados unificados da biópsia prévia, estigmas do exame físico e macro-limites de imagem para classificar estágio, indicando a cirurgia apropriada.</span></p>
+        </div>
+
         {/* ÓRGÃO */}
         <div className="mb-8">
           <label className="block text-sm font-semibold text-slate-700 mb-4">Topografia Principal:</label>
