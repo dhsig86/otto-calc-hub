@@ -246,8 +246,8 @@ Data: ${new Date().toLocaleDateString('pt-BR')}`;
         </div>
 
         <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 mb-6 text-sm text-slate-900 shadow-sm transition-all hover:shadow-md">
-          <p className="mb-2"><strong className="text-slate-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Estadiamento oncológico anatômico clinicamente unificado para câncer de cabeça e pescoço (UICC/AJCC).</span></p>
-          <p><strong className="text-slate-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">O médico consolida os dados unificados da biópsia prévia, estigmas do exame físico e macro-limites de imagem para classificar estágio, indicando a cirurgia apropriada.</span></p>
+          <p className="mb-2"><strong className="text-slate-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Faz o estadiamento rápido e oficial do câncer de cabeça e pescoço.</span></p>
+          <p><strong className="text-slate-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Cruze o que você viu no exame com a ressonância e biópsia para classificar o tumor e definir se opera ou irradia.</span></p>
         </div>
 
         {/* ÓRGÃO */}

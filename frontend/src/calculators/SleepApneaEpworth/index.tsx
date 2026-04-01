@@ -68,8 +68,8 @@ export default function SleepApneaEpworth({ patientId, doctorId }: Props) {
         </div>
 
         <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-5 mb-6 text-sm text-indigo-900 shadow-sm transition-all hover:shadow-md">
-          <p className="mb-2"><strong className="text-indigo-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Discernir e estigmatizar de fato a hipersonia (doença patológica de sede diurna do sono profundo) da fadiga crônica simples metabólica natural.</span></p>
-          <p><strong className="text-indigo-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Sem atritos cognitivos o paciente julga as perdas súbitas da consciência perante letargias corriqueiras em repouso basal diário.</span></p>
+          <p className="mb-2"><strong className="text-indigo-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Mede o sono diurno para separar quem só dorme mal de quem tem apneia perigosa.</span></p>
+          <p><strong className="text-indigo-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">O próprio paciente julga se apagaria fácil lendo ou no sinal vermelho. Super prático.</span></p>
         </div>
 
         <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-sm text-amber-800">

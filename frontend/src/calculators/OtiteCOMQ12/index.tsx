@@ -68,8 +68,8 @@ export default function OtiteCOMQ12({ patientId, doctorId }: Props) {
         </div>
 
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-6 text-sm text-amber-900 shadow-sm transition-all hover:shadow-md">
-          <p className="mb-2"><strong className="text-amber-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Parametrizar de ponta a ponta a morbidade limitadora gerada pelos surtos fétidos de Otite Média Crônica persistente.</span></p>
-          <p><strong className="text-amber-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Paciente descreve com rigor a piora otológica da última janela de 4 semanas, balizando se as lavagens com tópicos bastaram ou urge de intervenção anatômica.</span></p>
+          <p className="mb-2"><strong className="text-amber-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Avalia o sufoco que a Otite Média Crônica (doença do ouvido vazando) causa.</span></p>
+          <p><strong className="text-amber-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">O paciente lembra das últimas 4 semanas e pontua gotejamento e audição. Ajuda a cravar a hora de operar.</span></p>
         </div>
 
         <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-sm text-amber-800">

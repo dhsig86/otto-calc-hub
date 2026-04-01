@@ -66,8 +66,8 @@ export default function NeckMalignancyCalc({ patientId, doctorId }: Props) {
         </div>
 
         <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 mb-6 text-sm text-slate-900 shadow-sm transition-all hover:shadow-md">
-          <p className="mb-2"><strong className="text-slate-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Rastrear de forma modelada a probabilidade de uma massa / tumoração cervical ter berço oncológico perigoso.</span></p>
-          <p><strong className="text-slate-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">O clínico avalia dados epidemiológicos (idade, hábitos tabágistas) e as variantes do exame físico (mobilidade elástica) logrando decisão estatística por citologia PAAF guiada ou ressecção.</span></p>
+          <p className="mb-2"><strong className="text-slate-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Calcula a chance de um caroço no pescoço ser câncer.</span></p>
+          <p><strong className="text-slate-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Junte idade, hábitos e como o nódulo é ao toque (ex: móvel ou duro) para saber se a biópsia (PAAF) é urgente.</span></p>
         </div>
 
         <div className="space-y-6 mb-8">

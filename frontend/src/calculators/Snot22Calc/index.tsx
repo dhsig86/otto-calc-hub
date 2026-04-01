@@ -119,8 +119,8 @@ export default function Snot22Calc({ patientId, doctorId }: Props) {
         </div>
 
         <div className="bg-sky-50 border border-sky-200 rounded-xl p-5 mb-6 text-sm text-sky-900 shadow-sm transition-all hover:shadow-md">
-          <p className="mb-2"><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Avaliar o impacto e peso sintomático da rinossinusite crônica (com ou sem polipose) na qualidade de vida e sono.</span></p>
-          <p><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Paciente pontua as 22 queixas. Aplicar na triagem cirúrgica e como métrica de eficácia analítica no seguimento pós-tratamento.</span></p>
+          <p className="mb-2"><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Mostra o peso que a rinossinusite crônica tem no sono e bem-estar geral.</span></p>
+          <p><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">O paciente dá nota nas 22 queixas. Use na triagem cirúrgica e para ver se o tratamento funcionou.</span></p>
         </div>
 
         {/* Barra de Progresso */}

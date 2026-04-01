@@ -68,8 +68,8 @@ export default function VoiceVoiSS({ patientId, doctorId }: Props) {
         </div>
 
         <div className="bg-rose-50 border border-rose-200 rounded-xl p-5 mb-6 text-sm text-rose-900 shadow-sm transition-all hover:shadow-md">
-          <p className="mb-2"><strong className="text-rose-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Ferramenta vocal superlativa de avaliação, unicamente englobante na caça de dor muscular paralela aos desvios primários da prega fibótica vocal.</span></p>
-          <p><strong className="text-rose-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Autoaplicação protocolada exigindo atenção contínua. Excelente como matriz fonoaudiológica balizadora ou checklist pós anestesia profunda da via glótica.</span></p>
+          <p className="mb-2"><strong className="text-rose-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">A escala vocal mais completa! Caça problemas musculares paralelos à rouquidão.</span></p>
+          <p><strong className="text-rose-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Ótima para guiar a terapia com fonoaudióloga. O paciente pontua detalhes finos de cansaço e dor na voz.</span></p>
         </div>
 
         <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-sm text-amber-800">

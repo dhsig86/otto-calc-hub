@@ -67,8 +67,8 @@ export default function SleepApneaSTOPBang({ patientId, doctorId }: Props) {
         </div>
 
         <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-5 mb-6 text-sm text-indigo-900 shadow-sm transition-all hover:shadow-md">
-          <p className="mb-2"><strong className="text-indigo-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Rastrear ativamente por meio de dados biomorfofisiológicos e roncopatias ruidosas noturnas subjacentes episódios da Síndrome da Apneia Obstrutiva.</span></p>
-          <p><strong className="text-indigo-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">A parte I exige preenchimento sintomático declarado e a II, medidas fisiológicas cruciais do observador cruzando circunferência cervical, faixas hipertensivas, BMI denso.</span></p>
+          <p className="mb-2"><strong className="text-indigo-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Filtro rápido para descobrir se o paciente tem alto risco de Apneia do Sono grave.</span></p>
+          <p><strong className="text-indigo-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Mistura os sintomas dele (ronco, cansaço) com o que você vê (pescoço largo, obesidade). Se der alto, mande pra polissonografia.</span></p>
         </div>
 
         {/* Legenda de risco */}

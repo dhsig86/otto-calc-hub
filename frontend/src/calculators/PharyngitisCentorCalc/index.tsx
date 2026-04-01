@@ -78,8 +78,8 @@ export default function PharyngitisCentorCalc({ patientId, doctorId }: Props) {
         </div>
 
         <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5 mb-6 text-sm text-emerald-900 shadow-sm transition-all hover:shadow-md">
-          <p className="mb-2"><strong className="text-emerald-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Estimar a probabilidade e a hipótese de uma faringoamigdalite ter etiologia bacteriana (Estreptocócica), reduzindo drasticamente o uso desnecessário e abusivo de antibióticos empíricos.</span></p>
-          <p><strong className="text-emerald-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">À beira do leito ou consultório, o médico sinaliza a idade do paciente e cruza com estigmas de exame físico da orofaringe e queixas adjacentes (tosse, adenopatia).</span></p>
+          <p className="mb-2"><strong className="text-emerald-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Evita dar antibiótico à toa tentando adivinhar se a dor de garganta é por bactéria (Strep).</span></p>
+          <p><strong className="text-emerald-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Bata o olho na idade, febre, tosse e nas placas da amígdala do paciente na sua frente. O painel diz se vale a pena colher Swab ou ir com Azitromicina.</span></p>
         </div>
 
         <div className="space-y-5 mb-8">

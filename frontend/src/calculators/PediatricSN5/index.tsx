@@ -76,8 +76,8 @@ export default function PediatricSN5({ patientId, doctorId }: Props) {
         </div>
 
         <div className="bg-sky-50 border border-sky-200 rounded-xl p-5 mb-6 text-sm text-sky-900 shadow-sm transition-all hover:shadow-md">
-          <p className="mb-2"><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Aferir quantitativamente a alteração fisiológica por problemas sinonasais crônicos na faixa pediátrica.</span></p>
-          <p><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Os pais ou cuidadores avaliam a constância clínica do último mês usando a escala VAS de 1-7. Funciona como evidência validada para a indicação de adenoidectomia.</span></p>
+          <p className="mb-2"><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Avalia o incômodo da sinusite e rinite crônica nas crianças.</span></p>
+          <p><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Os pais dizem como foi o último mês. Funciona super bem no prontuário para justificar a cirurgia de adenoide.</span></p>
         </div>
 
         <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-sm text-amber-800">

@@ -72,8 +72,8 @@ export default function CochlearNCIQ({ patientId, doctorId }: Props) {
         </div>
 
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-6 text-sm text-amber-900 shadow-sm transition-all hover:shadow-md">
-          <p className="mb-2"><strong className="text-amber-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Validar a transição qualitativa global (domínios cognitivo/telefônico, convívio tátil social) que o dispositivo de implante cirúrgico gerou.</span></p>
-          <p><strong className="text-amber-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Discutido e acompanhado prospectivamente com o paciente por meses depois das ativações auditórias mensais (mapeamentos fonológicos da unidade de controle).</span></p>
+          <p className="mb-2"><strong className="text-amber-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Avalia o sucesso e o ganho de vida de quem colocou o Implante Coclear.</span></p>
+          <p><strong className="text-amber-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Converse com o paciente nos meses após ligar o aparelho para entender se ele socializa e ouve bem na rua.</span></p>
         </div>
 
         <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-sm text-amber-800">

@@ -94,8 +94,8 @@ export default function RefluxCalc({ patientId, doctorId }: Props) {
         </div>
 
         <div className="bg-rose-50 border border-rose-200 rounded-xl p-5 mb-6 text-sm text-rose-900 shadow-sm transition-all hover:shadow-md">
-          <p className="mb-2"><strong className="text-rose-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Aglutinar dados crônicos atípicos do DRGE silencioso isolando e detectando a clássica Doença do Refluxo Laringofaríngeo retrograda silenciosa (DRLF).</span></p>
-          <p><strong className="text-rose-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Paciente reflete em escala 0-5 a acidez e secreção da garganta. Valores limiares cruzados fornecem prescrições IBP precisas antes da phmetria padrão ouro ocorrer.</span></p>
+          <p className="mb-2"><strong className="text-rose-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Diagnostica o Refluxo Laringofaríngeo (o refluxo silencioso que inflama a garganta).</span></p>
+          <p><strong className="text-rose-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">O paciente dá nota para pigarro, tosse e bolo na faringe. Pontuação alta serve para iniciar omeprazol na hora, antes de exames chatos.</span></p>
         </div>
 
         <div className="space-y-6 mb-8">

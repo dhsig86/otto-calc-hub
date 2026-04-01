@@ -66,8 +66,8 @@ export default function TraqueoCPSS({ patientId, doctorId }: Props) {
         </div>
 
         <div className="bg-orange-50 border border-orange-200 rounded-xl p-5 mb-6 text-sm text-orange-900 shadow-sm transition-all hover:shadow-md">
-          <p className="mb-2"><strong className="text-orange-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Diferenciar a mera colonização da via aérea por tubo perante reais patógenos inflamatórios bacterianos na pneumonia intrínseca às secreções.</span></p>
-          <p><strong className="text-orange-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Checklist diário intensivo por via médica para unificar os desvios térmicos aos decaimentos de oxigênio PaO2 guiando antimicrobianos endovenosos em leito cirúrgico ou UTI.</span></p>
+          <p className="mb-2"><strong className="text-orange-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Na UTI, separa se o paciente entubado está com pneumonia ou apenas soltando catarro inofensivo.</span></p>
+          <p><strong className="text-orange-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Some a febre, a gosma, o raio-x e o oxigênio dele. A pontuação guia o uso do antimicrobiano venoso na hora.</span></p>
         </div>
 
         <div className="space-y-6 mb-8">

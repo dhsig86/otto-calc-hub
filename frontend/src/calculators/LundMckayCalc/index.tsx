@@ -125,8 +125,8 @@ export default function LundMckayCalc({ patientId, doctorId }: Props) {
         </div>
 
         <div className="bg-sky-50 border border-sky-200 rounded-xl p-5 mb-6 text-sm text-sky-900 shadow-sm transition-all hover:shadow-md">
-          <p className="mb-2"><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Estadiamento tomográfico objetivo da rinossinusite crônica.</span></p>
-          <p><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">O médico examinador avalia os cortes da Tomografia Computadorizada (TC) e pontua radiologicamente a opacificação de cada seio e a perviedade do complexo ostiomeatal.</span></p>
+          <p className="mb-2"><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Dá uma nota para a gravidade da sinusite crônica usando a Tomografia.</span></p>
+          <p><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Olhe os cortes da TC e pontue se cada seio da face está limpo, parcialmente velado ou todo fechado.</span></p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">

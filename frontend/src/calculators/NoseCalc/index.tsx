@@ -95,8 +95,8 @@ export default function NoseCalc({ patientId, doctorId }: Props) {
         </div>
 
         <div className="bg-sky-50 border border-sky-200 rounded-xl p-5 mb-6 text-sm text-sky-900 shadow-sm transition-all hover:shadow-md">
-          <p className="mb-2"><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Quantificar a severidade subjetiva da obstrução nasal e seu real impacto na qualidade de vida do paciente.</span></p>
-          <p><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Autoaplicável pelo paciente. Ideal para documentação pré-operatória (ex: desvio septal, hipertrofia) e validação de sucesso no pós-operatório (delta de handicap pré x pós).</span></p>
+          <p className="mb-2"><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Mede o quanto o nariz entupido atrapalha a vida do paciente.</span></p>
+          <p><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Deixe o paciente responder. É ótimo para provar a melhora dele após uma cirurgia de desvio de septo ou carne esponjosa.</span></p>
         </div>
 
         <div className="space-y-6 mb-8">

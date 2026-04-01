@@ -76,8 +76,8 @@ export default function TinnitusTHI({ patientId, doctorId }: Props) {
         </div>
 
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-6 text-sm text-amber-900 shadow-sm transition-all hover:shadow-md">
-          <p className="mb-2"><strong className="text-amber-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Mensurar o impacto incapacitante do tinido (zumbido) na vida laboral, qualidade social e saúde mental do indivíduo a longo prazo.</span></p>
-          <p><strong className="text-amber-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Paciente autodenomina as limitações decorrentes acústicas. Essencial como baseline de gravidade que justifica terapia TRT ou ansiolíticos adjuvantes.</span></p>
+          <p className="mb-2"><strong className="text-amber-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Mede o estrago que o zumbido faz no lado emocional e na rotina do paciente.</span></p>
+          <p><strong className="text-amber-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">O paciente preenche as limitações. É a prova inicial que você precisa para começar terapia sonora ou remédios.</span></p>
         </div>
 
         {/* Barra de Progresso */}

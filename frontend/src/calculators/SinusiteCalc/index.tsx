@@ -104,8 +104,8 @@ export default function SinusiteCalc({ patientId, doctorId }: Props) {
         </div>
 
         <div className="bg-sky-50 border border-sky-200 rounded-xl p-5 mb-6 text-sm text-sky-900 shadow-sm transition-all hover:shadow-md">
-          <p className="mb-2"><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Algoritmo clínico diagnóstico fenotípico de Rinossinusite Aguda ou Crônica segundo consensus EPOS 2020.</span></p>
-          <p><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">O prescritor preenche o questionário durante a anamnese guiada para blindar o diagnóstico exato e embasar antibiótocoterapia sistêmica ou tópica.</span></p>
+          <p className="mb-2"><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Ajuda a confirmar rápido se a sinusite é bacteriana (EPOS 2020).</span></p>
+          <p><strong className="text-sky-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Vá ticando os sintomas durante a consulta para justificar se vai prescrever antibiótico ou só corticoide.</span></p>
         </div>
 
         {/* Escolha da Diretriz */}

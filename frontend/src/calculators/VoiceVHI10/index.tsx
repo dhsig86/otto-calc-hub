@@ -68,8 +68,8 @@ export default function VoiceVHI10({ patientId, doctorId }: Props) {
         </div>
 
         <div className="bg-rose-50 border border-rose-200 rounded-xl p-5 mb-6 text-sm text-rose-900 shadow-sm transition-all hover:shadow-md">
-          <p className="mb-2"><strong className="text-rose-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Índice abreviado ágil para quantificar distúrbios da emissão perante rouquidão e disfonias suspeitas de danos fonoarticulatórios orgânicos ou cistos.</span></p>
-          <p><strong className="text-rose-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Lido e assinalado pelo paciente na espera do consultório. Alta chance preditiva para lesões antes mesmo do escopo endoscópio adentrar a glote.</span></p>
+          <p className="mb-2"><strong className="text-rose-700 uppercase tracking-wide text-[10px] sm:text-xs">🎯 Para que serve:</strong><br/> <span className="opacity-90 font-medium">Triagem rápida para ver se a rouquidão está prejudicando a vida do paciente.</span></p>
+          <p><strong className="text-rose-700 uppercase tracking-wide text-[10px] sm:text-xs">💡 Como aplicar:</strong><br/> <span className="opacity-90 font-medium">Ele preenche na sala de espera. A nota já te diz se pode ter nódulos ou pólipos antes mesmo da laringoscopia.</span></p>
         </div>
 
         <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-sm text-amber-800">
