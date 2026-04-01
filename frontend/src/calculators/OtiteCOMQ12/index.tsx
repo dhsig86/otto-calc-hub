@@ -30,7 +30,7 @@ export default function OtiteCOMQ12({ patientId, doctorId }: Props) {
     navigator.clipboard.writeText(text).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2500); });
   };
 
-  const LIKERT_COLORS = ['#16a34a', '#84cc16', '#eab308', '#f97316', '#ef4444'];
+  const LIKERT_COLORS = ['#16a34a', '#84cc16', '#eab308', '#f97316', '#dc2626', '#991b1b'];
 
   if (result) {
     return (
@@ -89,15 +89,15 @@ export default function OtiteCOMQ12({ patientId, doctorId }: Props) {
                     <button
                       key={opt.value}
                       onClick={() => setAnswers(p => ({ ...p, [q.id]: opt.value }))}
-                      className={`flex-1 py-2 sm:py-3 rounded-lg font-bold text-[10px] sm:text-xs border-2 transition-all ${selected === opt.value ? 'text-white shadow-md scale-105' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-400'}`}
-                      style={selected === opt.value ? { backgroundColor: LIKERT_COLORS[idx], borderColor: LIKERT_COLORS[idx] } : {}}
+                      className={`flex-1 py-2 sm:py-3 rounded-lg font-bold text-[9px] sm:text-xs border-2 transition-all ${selected === opt.value ? 'text-white shadow-md scale-105' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}`}
+                      style={selected === opt.value ? { backgroundColor: LIKERT_COLORS[idx] || '#000', borderColor: LIKERT_COLORS[idx] || '#000' } : {}}
                     >
                       {opt.label}
                     </button>
                   ))}
                 </div>
-                <div className="flex justify-between text-[9px] text-slate-400 font-semibold mt-2 px-1">
-                  <span className="uppercase">0 - Nenhum</span><span className="uppercase">4 - Extremo</span>
+                <div className="flex justify-between text-[9px] text-slate-500 font-semibold mt-2 px-1">
+                  <span className="uppercase">0 - Nenhum</span><span className="uppercase">5 - Pior Possível</span>
                 </div>
               </div>
             );

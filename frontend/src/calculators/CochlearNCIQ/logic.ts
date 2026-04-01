@@ -5,11 +5,28 @@ export interface NCIQQuestion {
 }
 
 export const NCIQ_QUESTIONS: NCIQQuestion[] = [
-  { id: 1, text: 'Você consegue entender um conhecido em uma sala silenciosa?', domain: 'Físico' },
-  { id: 2, text: 'Você consegue entender um estranho em um ambiente barulhento?', domain: 'Físico' },
-  { id: 3, text: 'Você se sente confiante ao usar o telefone?', domain: 'Psicológico' },
-  { id: 4, text: 'Você se sente menos isolado por causa do implante?', domain: 'Social' },
-  { id: 5, text: 'Você participa de atividades em grupo com facilidade?', domain: 'Social' }
+  // Som Básico e Avançado (Físico)
+  { id: 1, text: 'Você escuta quando alguém chama seu nome em uma sala silenciosa?', domain: 'Físico' },
+  { id: 2, text: 'Consegue identificar o som da chuva ou da água correndo?', domain: 'Físico' },
+  { id: 3, text: 'Você entende bem o que é dito no rádio ou na televisão?', domain: 'Físico' },
+  { id: 4, text: 'Consegue entender um estranho em um ambiente com barulho de fundo?', domain: 'Físico' },
+  { id: 5, text: 'Você percebe de que direção os sons estão vindo na rua?', domain: 'Físico' },
+  
+  // Produção da Fala (Físico)
+  { id: 6, text: 'As pessoas pedem frequentemente para você repetir o que disse?', domain: 'Físico' },
+  { id: 7, text: 'Você consegue controlar o volume da sua própria voz?', domain: 'Físico' },
+  
+  // Autoestima e Psicológico
+  { id: 8, text: 'Sente-se confiante ao se apresentar para pessoas que não conhece?', domain: 'Psicológico' },
+  { id: 9, text: 'Você sente irritação ou frustração devido aos seus problemas auditivos?', domain: 'Psicológico' },
+  { id: 10, text: 'Você se sente dependente de outras pessoas por causa da audição?', domain: 'Psicológico' },
+  
+  // Atividade e Interação Social (Social)
+  { id: 11, text: 'Você evita ir a festas ou grandes reuniões devido à audição?', domain: 'Social' },
+  { id: 12, text: 'Você visita lojas ou faz compras com confiança e facilidade?', domain: 'Social' },
+  { id: 13, text: 'Sente-se isolado ou de fora das conversas em ambientes de grupo?', domain: 'Social' },
+  { id: 14, text: 'Você se sente seguro ao realizar chamadas de telefone?', domain: 'Social' },
+  { id: 15, text: 'Tem dificuldade ou tensão para manter uma conversa longa com amigos?', domain: 'Social' }
 ];
 
 export const NCIQ_OPTIONS = [
