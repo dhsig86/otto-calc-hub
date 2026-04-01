@@ -78,6 +78,10 @@ export default function SinusiteCalc({ patientId, doctorId }: Props) {
           </ul>
         </div>
 
+        <div className="bg-slate-50 p-4 rounded-lg mb-6 text-xs text-slate-500 text-center border border-slate-200">
+          <p className="font-bold mb-1">Referências Científicas Padrão-Ouro:</p>
+          <p className="italic">EPOS 2020: European Position Paper on Rhinosinusitis and Nasal Polyps.<br/>AAO-HNS 2015: Clinical Practice Guideline (Update): Adult Sinusitis.</p>
+        </div>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button onClick={handleCopy} className={`py-3 px-6 rounded-lg font-bold border-2 transition-all ${copied ? 'bg-green-500 text-white border-green-500' : 'bg-white text-slate-600 border-slate-300 hover:border-[#00A0AF]'}`}>
             {copied ? '✅ Copiado!' : '📋 Copiar Resultado'}

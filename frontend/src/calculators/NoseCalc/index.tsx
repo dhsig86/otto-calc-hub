@@ -69,6 +69,10 @@ export default function NoseCalc({ patientId, doctorId }: Props) {
         </h2>
         {patientId && <p className="text-slate-500 text-sm mb-2">Paciente: <strong>{patientId}</strong></p>}
         <p className="text-xl font-bold mb-6 text-slate-700">{submittedResult.classification}</p>
+        <div className="bg-slate-50 p-4 rounded-lg mb-6 text-xs text-slate-500 text-center border border-slate-200">
+          <p className="font-bold mb-1">Referência Científica Padrão-Ouro:</p>
+          <p className="italic">Stewart MG, et al. (2004). Development and validation of the Nasal Obstruction Symptom Evaluation (NOSE) scale. Otolaryngol Head Neck Surg.</p>
+        </div>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button onClick={handleCopy} className={`py-3 px-6 rounded-lg font-bold border-2 transition-all ${copied ? 'bg-green-500 text-white border-green-500' : 'bg-white text-slate-600 border-slate-300 hover:border-[#00A0AF]'}`}>
             {copied ? '✅ Copiado!' : '📋 Copiar Resultado'}
