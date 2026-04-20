@@ -8,7 +8,7 @@ class ResultBase(BaseModel):
     calc_type: str
     score: float
     raw_answers: Dict[str, Any]
-    hub_version: Optional[str] = "1.3.0"
+    hub_version: Optional[str] = "2.0.0"
 
 class ResultCreate(ResultBase):
     pass
