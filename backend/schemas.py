@@ -14,7 +14,7 @@ class ResultCreate(ResultBase):
     pass
 
 class ResultOut(ResultBase):
-    id: int
+    id: str
     created_at: datetime
 
     class Config:
