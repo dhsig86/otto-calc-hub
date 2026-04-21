@@ -19,3 +19,7 @@ temp_calcs/
 # OS Files
 .DS_Store
 Thumbs.db
+
+*firebase*.json
+otto-ecosystem*.json
+backend/.env
