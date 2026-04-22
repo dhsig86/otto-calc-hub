@@ -13,14 +13,40 @@ app = FastAPI(
     version="2.0.0"
 )
 
-# CORS: aceita localhost (dev) + domínio Vercel (produção) + variável de ambiente opcional
+# CORS: cobre todos os frontends do ecossistema OTTO
+# + variável de ambiente para sobrescrita pontual no Render
 FRONTEND_URL = os.getenv("FRONTEND_URL", "")
-allowed_origins = [
+
+OTTO_ECOSYSTEM_ORIGINS = [
+    # --- Desenvolvimento local ---
+    "http://localhost:3000",
     "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:8080",
+    "http://127.0.0.1:3000",
     "http://127.0.0.1:5173",
-    "https://otto-calc-hub.vercel.app"
+    "http://127.0.0.1:5174",
+    "http://127.0.0.1:8080",
+    # --- OTTO CALC-HUB (frontend próprio) ---
+    "https://otto-calc-hub.vercel.app",
+    # --- OTTO PWA ---
+    "https://otto-pwa.vercel.app",
+    # --- OTTO IMUNE ---
+    "https://otto-imune.vercel.app",
+    # --- Domínio personalizado Dr. Hart ---
+    "https://drdariohart.com",
+    "https://www.drdariohart.com",
+    "https://ocr.drdariohart.com",
+    "https://atlas.drdariohart.com",
+    "https://procod.drdariohart.com",
+    # --- OTTO CASES ---
+    "https://cases.drdariohart.com",
+    # --- OTTO TRIAGEM ---
+    "https://otto-ai-triagem-1fc48c3c292e.herokuapp.com",
 ]
-if FRONTEND_URL:
+
+allowed_origins = OTTO_ECOSYSTEM_ORIGINS.copy()
+if FRONTEND_URL and FRONTEND_URL not in allowed_origins:
     allowed_origins.append(FRONTEND_URL)
 
 app.add_middleware(
