@@ -36,6 +36,7 @@ OTTO_ECOSYSTEM_ORIGINS = [
     # --- Domínio personalizado Dr. Hart ---
     "https://drdariohart.com",
     "https://www.drdariohart.com",
+    "https://otto.drdariohart.com",   # PWA produção
     "https://ocr.drdariohart.com",
     "https://atlas.drdariohart.com",
     "https://procod.drdariohart.com",
